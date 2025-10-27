@@ -413,3 +413,40 @@ Siehe [LABELS.md](LABELS.md) für standardisiertes, einfaches Label-System:
 - Unvollständige Accessibility Richtlinien
 - Fehlende Design System & GitHub Templates Dokumentation
 
+---
+
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
+
+- How to set up the development environment
+- Coding standards and conventions
+- Pull request process
+- Reporting bugs and suggesting features
+
+## License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+### Third-Party Licenses
+
+This project uses several open-source libraries and APIs:
+
+- **React, Vite, Tailwind CSS** - MIT License
+- **Quagga2** (Barcode Scanner) - MIT License
+- **MusicBrainz API** - CC0 (Public Domain)
+- **Spotify Web API** - Proprietary (Terms of Service apply)
+
+See [LICENSE](LICENSE) for complete third-party attribution.
+
+## Acknowledgments
+
+- [MusicBrainz](https://musicbrainz.org/) for album metadata
+- [Cover Art Archive](https://coverartarchive.org/) for album covers
+- [Spotify](https://developer.spotify.com/) for the Web API
+- All open-source contributors
+
+---
+
+**Made with ❤️ by [S540d](https://github.com/S540d)**
+
