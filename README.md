@@ -1,3 +1,77 @@
+# CD to Spotify PWA
+
+A Progressive Web App that allows you to scan CD barcodes and create Spotify playlists or play albums instantly.
+
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![React](https://img.shields.io/badge/React-18-blue.svg)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)
+
+## 🎵 Features
+
+- 📷 **Barcode Scanning**: Scan CD barcodes using your device camera
+- 🎵 **Spotify Integration**: Create playlists and play albums directly on Spotify
+- 💾 **Local Storage**: Store your scanned CDs in IndexedDB for offline access
+- 📱 **PWA Ready**: Install on mobile devices and work offline
+- 🎯 **Three Modes**:
+  - **Import Mode**: Batch scan multiple CDs to build your collection
+  - **Play Mode**: Scan and instantly play a CD on Spotify
+  - **Manage Mode**: View, organize, and manage your scanned albums
+
+## 🚀 Quick Start
+
+The application code is in the `app/` directory. See [app/README.md](app/README.md) for detailed setup instructions.
+
+```bash
+cd app
+npm install
+cp .env.example .env
+# Edit .env with your Spotify credentials
+npm run dev
+```
+
+## 📁 Repository Structure
+
+```
+CD-to-Spotify-PWA/
+├── app/                          # Main application
+│   ├── src/
+│   │   ├── components/          # React components
+│   │   │   ├── barcode/        # Barcode scanner
+│   │   │   ├── ui/             # UI components (Button, Toast, etc.)
+│   │   │   └── layout/         # Layout components
+│   │   ├── pages/              # Page components (Home, Import, Play, Manage)
+│   │   ├── services/           # API services (Spotify, MusicBrainz, IndexedDB)
+│   │   ├── types/              # TypeScript type definitions
+│   │   └── utils/              # Utility functions
+│   ├── public/                  # Static assets and PWA icons
+│   ├── README.md               # Detailed application documentation
+│   └── package.json
+│
+├── .github/                     # GitHub templates and workflows
+├── technische_vorgaben.md       # Technical standards
+├── ux-vorgaben.md              # UX/UI guidelines
+├── design-system.md            # Component design system
+├── accessibility-guidelines.md  # Accessibility standards
+└── testing-standards.md        # Testing best practices
+```
+
+## 🛠 Technology Stack
+
+- **React 18** with TypeScript for type safety
+- **Vite** for fast development and optimized builds
+- **Tailwind CSS** for utility-first styling
+- **Quagga2** for barcode scanning
+- **IndexedDB** (via idb) for local data storage
+- **MusicBrainz API** for album metadata
+- **Spotify Web API** for playlist creation and playback
+- **Service Worker** for PWA capabilities
+
+## 📖 Documentation
+
+This repository also contains comprehensive project templates and standards:
+
+---
+
 # Project Templates
 
 Zentrale Vorlagen und Standards für alle Projekte. Diese Templates definieren Best Practices für Code-Qualität, UX/Design, Testing und Accessibility.
