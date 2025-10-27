@@ -8,8 +8,15 @@ export const Home: React.FC = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [albumCount, setAlbumCount] = useState(0);
+  const [clientId, setClientId] = useState('');
+  const [showClientIdInput, setShowClientIdInput] = useState(false);
 
   useEffect(() => {
+    // Load saved Client ID
+    const savedClientId = spotifyAuth.getClientId();
+    setClientId(savedClientId);
+    setShowClientIdInput(!savedClientId);
+
     // Check if user is authenticated
     setIsAuthenticated(spotifyAuth.isAuthenticated());
 
@@ -26,9 +33,27 @@ export const Home: React.FC = () => {
     albumDb.getCount().then(setAlbumCount);
   }, []);
 
+  const handleSaveClientId = () => {
+    if (clientId.trim()) {
+      spotifyAuth.setClientId(clientId.trim());
+      setShowClientIdInput(false);
+    }
+  };
+
+  const handleClearClientId = () => {
+    spotifyAuth.clearClientId();
+    setClientId('');
+    setShowClientIdInput(true);
+  };
+
   const handleLogin = () => {
-    const authUrl = spotifyAuth.getAuthUrl();
-    window.location.href = authUrl;
+    try {
+      const authUrl = spotifyAuth.getAuthUrl();
+      window.location.href = authUrl;
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Failed to generate auth URL');
+      setShowClientIdInput(true);
+    }
   };
 
   const handleLogout = () => {
@@ -60,6 +85,66 @@ export const Home: React.FC = () => {
 
         {/* Main Card */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+          {/* Spotify Client ID Configuration */}
+          <div className="mb-6 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+            <div className="font-semibold text-gray-900 dark:text-white mb-2">
+              Spotify Client ID
+            </div>
+            {showClientIdInput ? (
+              <div className="space-y-3">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Enter your Spotify App Client ID to use this application.
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={clientId}
+                    onChange={(e) => setClientId(e.target.value)}
+                    placeholder="7275bd5076504740b45d57398f1ae2d8"
+                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                  />
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={handleSaveClientId}
+                    disabled={!clientId.trim()}
+                  >
+                    Save
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Get your Client ID from{' '}
+                  <a
+                    href="https://developer.spotify.com/dashboard"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 dark:text-blue-400 hover:underline"
+                  >
+                    Spotify Developer Dashboard
+                  </a>
+                </p>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between">
+                <div className="flex-1 overflow-hidden">
+                  <div className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                    {clientId}
+                  </div>
+                  <div className="text-xs text-green-600 dark:text-green-400 mt-1">
+                    Configured ✓
+                  </div>
+                </div>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleClearClientId}
+                >
+                  Change
+                </Button>
+              </div>
+            )}
+          </div>
+
           {/* Spotify Auth Status */}
           <div className="mb-6 p-4 rounded-lg bg-gray-50 dark:bg-gray-700">
             <div className="flex items-center justify-between">
@@ -80,7 +165,12 @@ export const Home: React.FC = () => {
                   Disconnect
                 </Button>
               ) : (
-                <Button variant="primary" size="sm" onClick={handleLogin}>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={handleLogin}
+                  disabled={!clientId}
+                >
                   Connect Spotify
                 </Button>
               )}
