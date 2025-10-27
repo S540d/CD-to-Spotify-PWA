@@ -1,6 +1,11 @@
 import type { Album, SpotifyTokens } from '../types';
 
-const SPOTIFY_CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID || '';
+// Get Client ID from localStorage or env variable
+const getClientId = (): string => {
+  const storedClientId = localStorage.getItem('spotify_client_id');
+  return storedClientId || import.meta.env.VITE_SPOTIFY_CLIENT_ID || '';
+};
+
 const SPOTIFY_REDIRECT_URI = import.meta.env.VITE_SPOTIFY_REDIRECT_URI || window.location.origin;
 const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
 
@@ -15,10 +20,30 @@ const SCOPES = [
 ].join(' ');
 
 export const spotifyAuth = {
+  // Save Client ID to localStorage
+  setClientId(clientId: string): void {
+    localStorage.setItem('spotify_client_id', clientId);
+  },
+
+  // Get Client ID
+  getClientId(): string {
+    return getClientId();
+  },
+
+  // Clear Client ID
+  clearClientId(): void {
+    localStorage.removeItem('spotify_client_id');
+  },
+
   // Generate authorization URL for OAuth flow
   getAuthUrl(): string {
+    const clientId = getClientId();
+    if (!clientId) {
+      throw new Error('Spotify Client ID is not configured. Please enter your Client ID.');
+    }
+
     const params = new URLSearchParams({
-      client_id: SPOTIFY_CLIENT_ID,
+      client_id: clientId,
       response_type: 'token',
       redirect_uri: SPOTIFY_REDIRECT_URI,
       scope: SCOPES,
