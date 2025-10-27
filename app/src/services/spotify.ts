@@ -6,7 +6,29 @@ const getClientId = (): string => {
   return storedClientId || import.meta.env.VITE_SPOTIFY_CLIENT_ID || '';
 };
 
-const SPOTIFY_REDIRECT_URI = import.meta.env.VITE_SPOTIFY_REDIRECT_URI || window.location.origin;
+// Get Redirect URI - handles GitHub Pages base path correctly
+const getRedirectUri = (): string => {
+  const storedRedirectUri = localStorage.getItem('spotify_redirect_uri');
+  if (storedRedirectUri) {
+    return storedRedirectUri;
+  }
+
+  if (import.meta.env.VITE_SPOTIFY_REDIRECT_URI) {
+    return import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
+  }
+
+  // Auto-detect correct redirect URI
+  const origin = window.location.origin;
+  const pathname = window.location.pathname;
+
+  // For GitHub Pages, include the base path
+  if (pathname.startsWith('/CD-to-Spotify-PWA')) {
+    return `${origin}/CD-to-Spotify-PWA`;
+  }
+
+  return origin;
+};
+
 const SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
 
 // Scopes required for the app
@@ -35,6 +57,21 @@ export const spotifyAuth = {
     localStorage.removeItem('spotify_client_id');
   },
 
+  // Save Redirect URI to localStorage
+  setRedirectUri(redirectUri: string): void {
+    localStorage.setItem('spotify_redirect_uri', redirectUri);
+  },
+
+  // Get Redirect URI
+  getRedirectUri(): string {
+    return getRedirectUri();
+  },
+
+  // Clear Redirect URI
+  clearRedirectUri(): void {
+    localStorage.removeItem('spotify_redirect_uri');
+  },
+
   // Generate authorization URL for OAuth flow
   getAuthUrl(): string {
     const clientId = getClientId();
@@ -42,10 +79,12 @@ export const spotifyAuth = {
       throw new Error('Spotify Client ID is not configured. Please enter your Client ID.');
     }
 
+    const redirectUri = getRedirectUri();
+
     const params = new URLSearchParams({
       client_id: clientId,
       response_type: 'token',
-      redirect_uri: SPOTIFY_REDIRECT_URI,
+      redirect_uri: redirectUri,
       scope: SCOPES,
       show_dialog: 'true',
     });
