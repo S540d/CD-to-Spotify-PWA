@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import type { Album, Toast as ToastType } from '../types';
@@ -27,22 +27,22 @@ export const ManageMode: React.FC = () => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  useEffect(() => {
-    loadAlbums();
-  }, []);
-
-  const loadAlbums = async () => {
+  const loadAlbums = useCallback(async () => {
     try {
       setIsLoading(true);
       const allAlbums = await albumDb.getAllAlbums();
       setAlbums(allAlbums);
-    } catch (error) {
-      console.error('Error loading albums:', error);
+    } catch (_error) {
+      console.error('Error loading albums:', _error);
       addToast('error', 'Failed to load albums');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadAlbums();
+  }, [loadAlbums]);
 
   const handlePlay = async (album: Album) => {
     if (!album.spotifyUri) {
@@ -53,7 +53,7 @@ export const ManageMode: React.FC = () => {
     try {
       await spotifyApi.playAlbum(album.spotifyUri);
       addToast('success', `Playing: ${album.title}`);
-    } catch (error) {
+    } catch (_error) {
       addToast('error', 'Could not play album. Make sure Spotify is active.');
     }
   };
@@ -67,8 +67,8 @@ export const ManageMode: React.FC = () => {
       await albumDb.deleteAlbum(album.id);
       setAlbums((prev) => prev.filter((a) => a.id !== album.id));
       addToast('success', 'Album deleted');
-    } catch (error) {
-      console.error('Error deleting album:', error);
+    } catch (_error) {
+      console.error('Error deleting album:', _error);
       addToast('error', 'Failed to delete album');
     }
   };
@@ -82,8 +82,8 @@ export const ManageMode: React.FC = () => {
       await albumDb.clearAllAlbums();
       setAlbums([]);
       addToast('success', 'All albums deleted');
-    } catch (error) {
-      console.error('Error clearing albums:', error);
+    } catch (_error) {
+      console.error('Error clearing albums:', _error);
       addToast('error', 'Failed to clear albums');
     }
   };
@@ -104,8 +104,8 @@ export const ManageMode: React.FC = () => {
 
       addToast('success', 'Playlist created successfully!');
       window.open(playlistUrl, '_blank');
-    } catch (error) {
-      console.error('Playlist creation error:', error);
+    } catch (_error) {
+      console.error('Playlist creation error:', _error);
       addToast('error', 'Failed to create playlist');
     }
   };

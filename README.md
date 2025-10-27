@@ -1,23 +1,56 @@
-# CD to Spotify PWA
+# CD Collection to Playlist
 
-A Progressive Web App that allows you to scan CD barcodes and create Spotify playlists or play albums instantly.
+**"Archiviere deine CD-Sammlung digital - Scanne, speichere, höre überall"**
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![React](https://img.shields.io/badge/React-18-blue.svg)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)
+A Progressive Web App that helps you digitally archive your physical CD collection. Scan barcodes, store albums locally, and export to Spotify playlists - so you can finally move those CDs to the basement while keeping full access to your music.
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![React](https://img.shields.io/badge/React-18-blue.svg)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
+[![Status](https://img.shields.io/badge/status-alpha-orange.svg)](https://s540d.github.io/CD-to-Spotify-PWA)
+
+## 🚀 Live Demo
+
+**[Try the app now →](https://s540d.github.io/CD-to-Spotify-PWA)**
+
+> **Note**: Currently in **Phase 1 (Alpha)**. The Scan2Play feature is functional. You'll need a Spotify account to test playback features.
+
+## 🎯 The Problem
+
+You have a CD collection but no CD player. You want to free up space (moving, minimalism), but don't want to lose access to your music. Manual CSV imports are tedious and time-consuming.
+
+## 💡 The Solution
+
+Scan CD barcodes with your smartphone camera, automatically retrieve metadata (MusicBrainz), store your collection locally (IndexedDB), and export to Spotify-compatible formats (CSV, m3u).
 
 ## 🎵 Features
 
-- 📷 **Barcode Scanning**: Scan CD barcodes using your device camera
-- 🎵 **Spotify Integration**: Create playlists and play albums directly on Spotify
-- 💾 **Local Storage**: Store your scanned CDs in IndexedDB for offline access
-- 📱 **PWA Ready**: Install on mobile devices and work offline
-- 🎯 **Three Modes**:
-  - **Import Mode**: Batch scan multiple CDs to build your collection
-  - **Play Mode**: Scan and instantly play a CD on Spotify
-  - **Manage Mode**: View, organize, and manage your scanned albums
+### Phase 1: Scan2Play (Quick Win)
+- 📷 **Instant Playback**: Scan a CD barcode → Play immediately on Spotify
+- 🚀 **Fast**: < 3 seconds from scan to play
+- 📱 **Mobile-First**: Optimized for smartphone use
+
+### Phase 2: Digital Archive (Core Feature)
+- 📦 **Batch Scanning**: Scan 100+ CDs in one session
+- 💾 **Local Storage**: Your collection stored in IndexedDB (offline-capable)
+- 🖼️ **Album Covers**: Automatic cover art retrieval
+- 🔍 **Search & Filter**: Find albums by artist, year, genre
+- 📊 **Statistics**: See your collection insights (top artists, genres, decades)
+
+### Phase 3: Export & Manage (Flexibility)
+- 📄 **CSV Export**: Editable format for manual corrections
+- 🎵 **m3u Export**: Import into Spotify and other tools
+- 🔄 **CSV → m3u Conversion**: Edit in Excel, convert to m3u
+- ✏️ **Manage**: Edit metadata, delete albums, add manually
+- 📊 **Insights**: Visualizations (genres, decades, scanning activity)
 
 ## 🚀 Quick Start
+
+### Try it Online
+
+**[Launch the app →](https://s540d.github.io/CD-to-Spotify-PWA)**
+
+### Run Locally
 
 The application code is in the `app/` directory. See [app/README.md](app/README.md) for detailed setup instructions.
 
@@ -28,6 +61,21 @@ cp .env.example .env
 # Edit .env with your Spotify credentials
 npm run dev
 ```
+
+## 📚 Documentation
+
+- **[PROJECT_VISION.md](PROJECT_VISION.md)**: Detailed project vision, goals, and technical strategy
+- **[ROADMAP.md](ROADMAP.md)**: Development phases and timeline (14 weeks)
+- **[technische_vorgaben.md](technische_vorgaben.md)**: Technical standards and best practices
+- **[ux-vorgaben.md](ux-vorgaben.md)**: UX/UI guidelines and design principles
+- **[accessibility-guidelines.md](accessibility-guidelines.md)**: WCAG 2.1 AA compliance guidelines
+
+## 🎯 Target Audience
+
+- People with CD collections (50-300 CDs) who no longer have a CD player
+- Want to free up space (moving, minimalism, basement storage)
+- Prefer digital music consumption (Spotify, etc.)
+- NOT audiophiles (they prefer the tactile experience)
 
 ## 📁 Repository Structure
 
@@ -55,6 +103,19 @@ CD-to-Spotify-PWA/
 └── testing-standards.md        # Testing best practices
 ```
 
+## 🌟 Why This App?
+
+Unlike CSV import tools or manual solutions, this app offers:
+
+| Feature | This App | CSV Import | Manual |
+|---------|----------|------------|--------|
+| Barcode Scanner | ✅ Automatic | ❌ | ❌ |
+| Metadata Retrieval | ✅ MusicBrainz | ❌ Manual | ❌ Manual |
+| Local Archive | ✅ IndexedDB | ❌ | ❌ |
+| Offline-Capable | ✅ PWA | ❌ | ❌ |
+| Instant Playback | ✅ Scan2Play | ❌ | ❌ |
+| Cover Images | ✅ Automatic | ❌ | ❌ |
+
 ## 🛠 Technology Stack
 
 - **React 18** with TypeScript for type safety
@@ -62,11 +123,43 @@ CD-to-Spotify-PWA/
 - **Tailwind CSS** for utility-first styling
 - **Quagga2** for barcode scanning
 - **IndexedDB** (via idb) for local data storage
-- **MusicBrainz API** for album metadata
+- **MusicBrainz API** for album metadata and cover art
 - **Spotify Web API** for playlist creation and playback
-- **Service Worker** for PWA capabilities
+- **Service Worker** for PWA capabilities and offline support
 
-## 📖 Documentation
+## 📖 User Stories
+
+**Story 1: The Minimalist Mover**
+> "I'm moving to a smaller apartment and have 150 CDs taking up space. I scanned them all in one afternoon, exported to Spotify, and now they're in the basement. I still have access to all my music!"
+
+**Story 2: The Digital Native**
+> "My parents gave me their CD collection, but I don't have a CD player. I scanned everything, and now I can listen to their music on Spotify. It's like having their entire collection digitized!"
+
+**Story 3: The Quick Player**
+> "I found an old CD at a friend's place. No idea what's on it. I scanned it with the app, and it started playing immediately on Spotify. So convenient!"
+
+## 📅 Status & Roadmap
+
+**Current Status**: 🟢 Phase 1 (Alpha) - Live on GitHub Pages
+
+**What's Working:**
+- ✅ Barcode scanning (Quagga2)
+- ✅ MusicBrainz album lookup
+- ✅ Spotify OAuth login
+- ✅ Scan2Play: Instant CD → Spotify playback
+- ✅ Local album storage (IndexedDB)
+- ✅ PWA ready (installable)
+
+**Development Roadmap** (14 weeks total):
+- **Phase 1** ✅ COMPLETE: Scan2Play - Instant barcode → Spotify playback
+- **Phase 2** (in progress): Digital Archive - Batch scanning + enhanced UI
+- **Phase 3** (planned): Export & Management - CSV/m3u export, statistics
+
+See [ROADMAP.md](ROADMAP.md) for detailed milestones and features.
+
+---
+
+## 📖 Project Templates & Standards
 
 This repository also contains comprehensive project templates and standards:
 
@@ -337,4 +430,41 @@ Siehe [LABELS.md](LABELS.md) für standardisiertes, einfaches Label-System:
 - Jest statt Vitest
 - Unvollständige Accessibility Richtlinien
 - Fehlende Design System & GitHub Templates Dokumentation
+
+---
+
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
+
+- How to set up the development environment
+- Coding standards and conventions
+- Pull request process
+- Reporting bugs and suggesting features
+
+## License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+### Third-Party Licenses
+
+This project uses several open-source libraries and APIs:
+
+- **React, Vite, Tailwind CSS** - MIT License
+- **Quagga2** (Barcode Scanner) - MIT License
+- **MusicBrainz API** - CC0 (Public Domain)
+- **Spotify Web API** - Proprietary (Terms of Service apply)
+
+See [LICENSE](LICENSE) for complete third-party attribution.
+
+## Acknowledgments
+
+- [MusicBrainz](https://musicbrainz.org/) for album metadata
+- [Cover Art Archive](https://coverartarchive.org/) for album covers
+- [Spotify](https://developer.spotify.com/) for the Web API
+- All open-source contributors
+
+---
+
+**Made with ❤️ by [S540d](https://github.com/S540d)**
 

@@ -120,9 +120,9 @@ export const spotifyApi = {
       }
 
       return null;
-    } catch (error) {
-      console.error('Error searching Spotify:', error);
-      throw error;
+    } catch (_error) {
+      console.error('Error searching Spotify:', _error);
+      throw _error;
     }
   },
 
@@ -170,9 +170,9 @@ export const spotifyApi = {
       // In a full implementation, we'd fetch all tracks from albums and add them
 
       return playlist.external_urls.spotify;
-    } catch (error) {
-      console.error('Error creating playlist:', error);
-      throw error;
+    } catch (_error) {
+      console.error('Error creating playlist:', _error);
+      throw _error;
     }
   },
 
@@ -193,14 +193,14 @@ export const spotifyApi = {
       if (!response.ok && response.status !== 204) {
         throw new Error('Failed to play album');
       }
-    } catch (error) {
-      console.error('Error playing album:', error);
-      throw error;
+    } catch (_error) {
+      console.error('Error playing album:', _error);
+      throw _error;
     }
   },
 
   // Get album details
-  async getAlbumDetails(albumId: string): Promise<any> {
+  async getAlbumDetails(albumId: string): Promise<unknown> {
     try {
       const response = await fetch(`${SPOTIFY_API_BASE}/albums/${albumId}`, {
         headers: this.getAuthHeader(),
@@ -211,9 +211,9 @@ export const spotifyApi = {
       }
 
       return response.json();
-    } catch (error) {
-      console.error('Error getting album details:', error);
-      throw error;
+    } catch (_error) {
+      console.error('Error getting album details:', _error);
+      throw _error;
     }
   },
 
@@ -231,8 +231,8 @@ export const spotifyApi = {
       }
 
       return album;
-    } catch (error) {
-      console.error('Error enriching album with Spotify data:', error);
+    } catch (_error) {
+      console.error('Error enriching album with Spotify data:', _error);
       return album;
     }
   },

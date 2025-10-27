@@ -62,14 +62,14 @@ export const PlayMode: React.FC = () => {
         try {
           await spotifyApi.playAlbum(album.spotifyUri);
           addToast('success', `Playing: ${album.title}`);
-        } catch (error) {
+        } catch (_error) {
           addToast('error', 'Could not play album. Make sure Spotify is active.');
         }
       } else {
         addToast('warning', 'Album not found on Spotify');
       }
-    } catch (error) {
-      console.error('Scan processing error:', error);
+    } catch (_error) {
+      console.error('Scan processing error:', _error);
       addToast('error', 'Failed to process barcode');
     } finally {
       setIsProcessing(false);
@@ -82,7 +82,7 @@ export const PlayMode: React.FC = () => {
         setIsProcessing(true);
         await spotifyApi.playAlbum(currentAlbum.spotifyUri);
         addToast('success', 'Playing album');
-      } catch (error) {
+      } catch (_error) {
         addToast('error', 'Could not play album');
       } finally {
         setIsProcessing(false);
