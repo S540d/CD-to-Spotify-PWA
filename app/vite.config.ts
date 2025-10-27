@@ -4,15 +4,16 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: process.env.NODE_ENV === 'production' ? '/CD-to-Spotify-PWA/' : '/',
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'pwa-192x192.svg', 'pwa-512x512.svg'],
       manifest: {
-        name: 'CD to Spotify',
-        short_name: 'CD2Spotify',
-        description: 'Scan CD barcodes and create Spotify playlists',
+        name: 'CD Collection to Playlist',
+        short_name: 'CD Collection',
+        description: 'Archive your CD collection digitally - Scan, store, export to Spotify',
         theme_color: '#1DB954',
         background_color: '#191414',
         display: 'standalone',

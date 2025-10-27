@@ -4,10 +4,16 @@
 
 A Progressive Web App that helps you digitally archive your physical CD collection. Scan barcodes, store albums locally, and export to Spotify playlists - so you can finally move those CDs to the basement while keeping full access to your music.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![React](https://img.shields.io/badge/React-18-blue.svg)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)
-![Status](https://img.shields.io/badge/status-planning-yellow.svg)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![React](https://img.shields.io/badge/React-18-blue.svg)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
+[![Status](https://img.shields.io/badge/status-alpha-orange.svg)](https://s540d.github.io/CD-to-Spotify-PWA)
+
+## 🚀 Live Demo
+
+**[Try the app now →](https://s540d.github.io/CD-to-Spotify-PWA)**
+
+> **Note**: Currently in **Phase 1 (Alpha)**. The Scan2Play feature is functional. You'll need a Spotify account to test playback features.
 
 ## 🎯 The Problem
 
@@ -40,9 +46,13 @@ Scan CD barcodes with your smartphone camera, automatically retrieve metadata (M
 
 ## 🚀 Quick Start
 
-**Note**: The project is currently in the planning phase. Implementation will start soon.
+### Try it Online
 
-The application code will be in the `app/` directory. See [app/README.md](app/README.md) for detailed setup instructions once development begins.
+**[Launch the app →](https://s540d.github.io/CD-to-Spotify-PWA)**
+
+### Run Locally
+
+The application code is in the `app/` directory. See [app/README.md](app/README.md) for detailed setup instructions.
 
 ```bash
 cd app
@@ -130,12 +140,20 @@ Unlike CSV import tools or manual solutions, this app offers:
 
 ## 📅 Status & Roadmap
 
-**Current Status**: 🟡 Planning Phase
+**Current Status**: 🟢 Phase 1 (Alpha) - Live on GitHub Pages
+
+**What's Working:**
+- ✅ Barcode scanning (Quagga2)
+- ✅ MusicBrainz album lookup
+- ✅ Spotify OAuth login
+- ✅ Scan2Play: Instant CD → Spotify playback
+- ✅ Local album storage (IndexedDB)
+- ✅ PWA ready (installable)
 
 **Development Roadmap** (14 weeks total):
-- **Phase 1** (4 weeks): Scan2Play - Instant barcode → Spotify playback
-- **Phase 2** (6 weeks): Digital Archive - Batch scanning + local storage
-- **Phase 3** (4 weeks): Export & Management - CSV/m3u export, statistics
+- **Phase 1** ✅ COMPLETE: Scan2Play - Instant barcode → Spotify playback
+- **Phase 2** (in progress): Digital Archive - Batch scanning + enhanced UI
+- **Phase 3** (planned): Export & Management - CSV/m3u export, statistics
 
 See [ROADMAP.md](ROADMAP.md) for detailed milestones and features.
 
