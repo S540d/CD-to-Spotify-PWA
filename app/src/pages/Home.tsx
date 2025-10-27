@@ -9,13 +9,19 @@ export const Home: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [albumCount, setAlbumCount] = useState(0);
   const [clientId, setClientId] = useState('');
+  const [redirectUri, setRedirectUri] = useState('');
   const [showClientIdInput, setShowClientIdInput] = useState(false);
+  const [showRedirectUriInput, setShowRedirectUriInput] = useState(false);
 
   useEffect(() => {
     // Load saved Client ID
     const savedClientId = spotifyAuth.getClientId();
     setClientId(savedClientId);
     setShowClientIdInput(!savedClientId);
+
+    // Load saved Redirect URI
+    const savedRedirectUri = spotifyAuth.getRedirectUri();
+    setRedirectUri(savedRedirectUri);
 
     // Check if user is authenticated
     setIsAuthenticated(spotifyAuth.isAuthenticated());
@@ -46,6 +52,20 @@ export const Home: React.FC = () => {
     setShowClientIdInput(true);
   };
 
+  const handleSaveRedirectUri = () => {
+    if (redirectUri.trim()) {
+      spotifyAuth.setRedirectUri(redirectUri.trim());
+      setShowRedirectUriInput(false);
+    }
+  };
+
+  const handleClearRedirectUri = () => {
+    spotifyAuth.clearRedirectUri();
+    const autoRedirectUri = spotifyAuth.getRedirectUri();
+    setRedirectUri(autoRedirectUri);
+    setShowRedirectUriInput(false);
+  };
+
   const handleLogin = () => {
     try {
       const authUrl = spotifyAuth.getAuthUrl();
@@ -57,8 +77,10 @@ export const Home: React.FC = () => {
   };
 
   const handleLogout = () => {
-    spotifyAuth.clearTokens();
-    setIsAuthenticated(false);
+    if (confirm('Möchten Sie sich wirklich von Spotify abmelden?')) {
+      spotifyAuth.clearTokens();
+      setIsAuthenticated(false);
+    }
   };
 
   return (
@@ -85,96 +107,176 @@ export const Home: React.FC = () => {
 
         {/* Main Card */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
-          {/* Spotify Client ID Configuration */}
+          {/* Spotify Configuration */}
           <div className="mb-6 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
-            <div className="font-semibold text-gray-900 dark:text-white mb-2">
-              Spotify Client ID
+            <div className="font-semibold text-gray-900 dark:text-white mb-4">
+              Spotify Konfiguration
             </div>
-            {showClientIdInput ? (
-              <div className="space-y-3">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Enter your Spotify App Client ID to use this application.
-                </p>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={clientId}
-                    onChange={(e) => setClientId(e.target.value)}
-                    placeholder="7275bd5076504740b45d57398f1ae2d8"
-                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
-                  />
+
+            {/* Client ID */}
+            <div className="mb-4">
+              <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Client ID
+              </div>
+              {showClientIdInput ? (
+                <div className="space-y-2">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={clientId}
+                      onChange={(e) => setClientId(e.target.value)}
+                      placeholder="7275bd5076504740b45d57398f1ae2d8"
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                    />
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={handleSaveClientId}
+                      disabled={!clientId.trim()}
+                    >
+                      Save
+                    </Button>
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Get your Client ID from{' '}
+                    <a
+                      href="https://developer.spotify.com/dashboard"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      Spotify Developer Dashboard
+                    </a>
+                  </p>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between bg-white dark:bg-gray-700 px-3 py-2 rounded-md">
+                  <div className="flex-1 overflow-hidden">
+                    <div className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                      {clientId}
+                    </div>
+                  </div>
                   <Button
-                    variant="primary"
+                    variant="secondary"
                     size="sm"
-                    onClick={handleSaveClientId}
-                    disabled={!clientId.trim()}
+                    onClick={handleClearClientId}
                   >
-                    Save
+                    Ändern
                   </Button>
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  Get your Client ID from{' '}
-                  <a
-                    href="https://developer.spotify.com/dashboard"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    Spotify Developer Dashboard
-                  </a>
-                </p>
+              )}
+            </div>
+
+            {/* Redirect URI */}
+            <div>
+              <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Redirect URI
               </div>
-            ) : (
-              <div className="flex items-center justify-between">
-                <div className="flex-1 overflow-hidden">
-                  <div className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                    {clientId}
+              {showRedirectUriInput ? (
+                <div className="space-y-2">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={redirectUri}
+                      onChange={(e) => setRedirectUri(e.target.value)}
+                      placeholder={redirectUri || 'https://s540d.github.io/CD-to-Spotify-PWA'}
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+                    />
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={handleSaveRedirectUri}
+                      disabled={!redirectUri.trim()}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => setShowRedirectUriInput(false)}
+                    >
+                      Cancel
+                    </Button>
                   </div>
-                  <div className="text-xs text-green-600 dark:text-green-400 mt-1">
-                    Configured ✓
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Muss mit der Redirect URI in Ihrem Spotify App übereinstimmen
+                  </p>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between bg-white dark:bg-gray-700 px-3 py-2 rounded-md">
+                  <div className="flex-1 overflow-hidden">
+                    <div className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                      {redirectUri}
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => setShowRedirectUriInput(true)}
+                    >
+                      Ändern
+                    </Button>
+                    {localStorage.getItem('spotify_redirect_uri') && (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={handleClearRedirectUri}
+                      >
+                        Reset
+                      </Button>
+                    )}
                   </div>
                 </div>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={handleClearClientId}
-                >
-                  Change
-                </Button>
-              </div>
-            )}
+              )}
+            </div>
+
+            <div className="mt-3 p-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded text-xs text-yellow-800 dark:text-yellow-200">
+              ⚠️ Wichtig: Diese Redirect URI muss in Ihrem Spotify App unter "Redirect URIs" eingetragen sein.
+            </div>
           </div>
 
           {/* Spotify Auth Status */}
           <div className="mb-6 p-4 rounded-lg bg-gray-50 dark:bg-gray-700">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="font-semibold text-gray-900 dark:text-white">
-                  Spotify Connection
+            <div className="font-semibold text-gray-900 dark:text-white mb-3">
+              Spotify Verbindung
+            </div>
+            {isAuthenticated ? (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span className="font-medium">Mit Spotify verbunden</span>
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {isAuthenticated ? (
-                    <span className="text-green-600">Connected ✓</span>
-                  ) : (
-                    <span className="text-gray-500">Not connected</span>
-                  )}
-                </div>
-              </div>
-              {isAuthenticated ? (
-                <Button variant="secondary" size="sm" onClick={handleLogout}>
-                  Disconnect
+                <Button
+                  variant="secondary"
+                  onClick={handleLogout}
+                  className="w-full"
+                >
+                  Von Spotify abmelden
                 </Button>
-              ) : (
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Verbinden Sie sich mit Spotify, um Ihre CDs abzuspielen und Playlists zu erstellen.
+                </div>
                 <Button
                   variant="primary"
-                  size="sm"
                   onClick={handleLogin}
                   disabled={!clientId}
+                  className="w-full"
                 >
-                  Connect Spotify
+                  Mit Spotify verbinden
                 </Button>
-              )}
-            </div>
+                {!clientId && (
+                  <p className="text-xs text-orange-600 dark:text-orange-400">
+                    Bitte konfigurieren Sie zuerst die Client ID
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Collection Stats */}
