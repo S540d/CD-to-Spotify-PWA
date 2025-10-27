@@ -19,6 +19,13 @@ const rateLimit = async (): Promise<void> => {
   lastRequestTime = Date.now();
 };
 
+interface MusicBrainzTrack {
+  id: string;
+  title: string;
+  length?: number;
+  position: number;
+}
+
 interface MusicBrainzRelease {
   id: string;
   title: string;
@@ -26,12 +33,7 @@ interface MusicBrainzRelease {
     name: string;
   }>;
   media?: Array<{
-    tracks?: Array<{
-      id: string;
-      title: string;
-      length?: number;
-      position: number;
-    }>;
+    tracks?: MusicBrainzTrack[];
   }>;
 }
 
@@ -118,7 +120,7 @@ export const musicBrainzApi = {
       const tracks: Track[] = [];
 
       if (data.media && data.media.length > 0) {
-        data.media[0].tracks?.forEach((track: any) => {
+        data.media[0].tracks?.forEach((track: MusicBrainzTrack) => {
           tracks.push({
             id: track.id,
             name: track.title,
@@ -129,8 +131,8 @@ export const musicBrainzApi = {
       }
 
       return { tracks };
-    } catch (error) {
-      console.error('Error fetching release details:', error);
+    } catch (_error) {
+      console.error('Error fetching release details:', _error);
       return null;
     }
   },
@@ -150,7 +152,7 @@ export const musicBrainzApi = {
       }
 
       return null;
-    } catch (error) {
+    } catch (_error) {
       return null;
     }
   },

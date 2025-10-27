@@ -1,17 +1,29 @@
-# CD to Spotify PWA
+# CD Collection to Playlist
 
-A Progressive Web App that allows you to scan CD barcodes and create Spotify playlists or play albums instantly.
+**"Archiviere deine CD-Sammlung digital - Scanne, speichere, höre überall"**
 
-## Features
+A Progressive Web App that helps you digitally archive your physical CD collection. Scan barcodes, store albums locally, and export to Spotify - so you can move those CDs to the basement while keeping full access to your music.
 
-- 📷 **Barcode Scanning**: Scan CD barcodes using your device camera
-- 🎵 **Spotify Integration**: Create playlists and play albums directly on Spotify
-- 💾 **Local Storage**: Store your scanned CDs in IndexedDB for offline access
-- 📱 **PWA Ready**: Install on mobile devices and work offline
-- 🎯 **Two Modes**:
-  - **Import Mode**: Batch scan multiple CDs to build your collection
-  - **Play Mode**: Scan and instantly play a CD on Spotify
-- 📚 **Collection Management**: View, organize, and manage your scanned albums
+> **Note**: This project is currently in the planning phase. Implementation will begin soon following the roadmap defined in [../ROADMAP.md](../ROADMAP.md).
+
+## Planned Features
+
+### Phase 1: Scan2Play (Quick Win)
+- 📷 **Instant Playback**: Scan CD barcode → Play immediately on Spotify
+- 🚀 **Fast**: < 3 seconds from scan to play
+- 📱 **Mobile-First**: Optimized for smartphone use
+
+### Phase 2: Digital Archive (Core Feature)
+- 📦 **Batch Scanning**: Scan 100+ CDs in one session
+- 💾 **Local Storage**: Your collection stored in IndexedDB (offline-capable)
+- 🖼️ **Album Covers**: Automatic cover art retrieval
+- 🔍 **Search & Filter**: Find albums by artist, year, genre
+
+### Phase 3: Export & Management
+- 📄 **CSV Export**: Editable format for manual corrections
+- 🎵 **m3u Export**: Import into Spotify and other tools
+- 🔄 **CSV → m3u Conversion**: Edit in Excel, convert to m3u
+- 📊 **Statistics**: Collection insights (top artists, genres, decades)
 
 ## Tech Stack
 
@@ -23,7 +35,16 @@ A Progressive Web App that allows you to scan CD barcodes and create Spotify pla
 - **MusicBrainz API** for album metadata
 - **Spotify Web API** for playlist creation and playback
 
+## 📚 Project Documentation
+
+For comprehensive project information, see the root directory:
+- **[../PROJECT_VISION.md](../PROJECT_VISION.md)**: Detailed vision, goals, and user stories
+- **[../ROADMAP.md](../ROADMAP.md)**: Development phases and timeline
+- **[../README.md](../README.md)**: Project overview
+
 ## Getting Started
+
+> **Note**: Setup instructions below are for future development. The app is not yet functional.
 
 ### Prerequisites
 
