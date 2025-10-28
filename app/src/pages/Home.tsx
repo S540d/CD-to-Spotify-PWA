@@ -13,15 +13,6 @@ export const Home: React.FC = () => {
     // Check if user is authenticated
     setIsAuthenticated(spotifyAuth.isAuthenticated());
 
-    // Check for auth callback
-    const tokens = spotifyAuth.parseTokensFromHash();
-    if (tokens) {
-      spotifyAuth.saveTokens(tokens);
-      setIsAuthenticated(true);
-      // Clear hash from URL
-      window.location.hash = '';
-    }
-
     // Load album count
     albumDb.getCount().then(setAlbumCount);
   }, []);
