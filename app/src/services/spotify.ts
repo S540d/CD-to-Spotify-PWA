@@ -1,10 +1,9 @@
 import type { Album, SpotifyTokens } from '../types';
 
-// Get Client ID from localStorage or env variable
-const getClientId = (): string => {
-  const storedClientId = localStorage.getItem('spotify_client_id');
-  return storedClientId || import.meta.env.VITE_SPOTIFY_CLIENT_ID || '';
-};
+// Spotify Client ID - Public (safe to commit)
+// This identifies the app to Spotify. Users authenticate with their own Spotify account.
+// Security is ensured by the Redirect URI whitelist in Spotify Developer Dashboard.
+const SPOTIFY_CLIENT_ID = '7275bd5076504740b45d57398f1ae2d8';
 
 // Get Redirect URI - handles GitHub Pages base path correctly
 const getRedirectUri = (): string => {
@@ -42,47 +41,17 @@ const SCOPES = [
 ].join(' ');
 
 export const spotifyAuth = {
-  // Save Client ID to localStorage
-  setClientId(clientId: string): void {
-    localStorage.setItem('spotify_client_id', clientId);
-  },
-
-  // Get Client ID
-  getClientId(): string {
-    return getClientId();
-  },
-
-  // Clear Client ID
-  clearClientId(): void {
-    localStorage.removeItem('spotify_client_id');
-  },
-
-  // Save Redirect URI to localStorage
-  setRedirectUri(redirectUri: string): void {
-    localStorage.setItem('spotify_redirect_uri', redirectUri);
-  },
-
-  // Get Redirect URI
+  // Get Redirect URI (for advanced users who want to override)
   getRedirectUri(): string {
     return getRedirectUri();
   },
 
-  // Clear Redirect URI
-  clearRedirectUri(): void {
-    localStorage.removeItem('spotify_redirect_uri');
-  },
-
   // Generate authorization URL for OAuth flow
   getAuthUrl(): string {
-    const clientId = getClientId();
-    if (!clientId) {
-      throw new Error('Spotify Client ID is not configured. Please enter your Client ID.');
-    }
-
     const redirectUri = getRedirectUri();
 
     const params = new URLSearchParams({
-      client_id: clientId,
+      client_id: SPOTIFY_CLIENT_ID,
       response_type: 'token',
       redirect_uri: redirectUri,
       scope: SCOPES,

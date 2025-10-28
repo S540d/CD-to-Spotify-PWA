@@ -8,18 +8,11 @@ export const Home: React.FC = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [albumCount, setAlbumCount] = useState(0);
-  const [clientId, setClientId] = useState('');
   const [redirectUri, setRedirectUri] = useState('');
-  const [showClientIdInput, setShowClientIdInput] = useState(false);
   const [showRedirectUriInput, setShowRedirectUriInput] = useState(false);
 
   useEffect(() => {
-    // Load saved Client ID
-    const savedClientId = spotifyAuth.getClientId();
-    setClientId(savedClientId);
-    setShowClientIdInput(!savedClientId);
-
-    // Load saved Redirect URI
+    // Load saved Redirect URI (for display purposes)
     const savedRedirectUri = spotifyAuth.getRedirectUri();
     setRedirectUri(savedRedirectUri);
 
@@ -39,41 +32,9 @@ export const Home: React.FC = () => {
     albumDb.getCount().then(setAlbumCount);
   }, []);
 
-  const handleSaveClientId = () => {
-    if (clientId.trim()) {
-      spotifyAuth.setClientId(clientId.trim());
-      setShowClientIdInput(false);
-    }
-  };
-
-  const handleClearClientId = () => {
-    spotifyAuth.clearClientId();
-    setClientId('');
-    setShowClientIdInput(true);
-  };
-
-  const handleSaveRedirectUri = () => {
-    if (redirectUri.trim()) {
-      spotifyAuth.setRedirectUri(redirectUri.trim());
-      setShowRedirectUriInput(false);
-    }
-  };
-
-  const handleClearRedirectUri = () => {
-    spotifyAuth.clearRedirectUri();
-    const autoRedirectUri = spotifyAuth.getRedirectUri();
-    setRedirectUri(autoRedirectUri);
-    setShowRedirectUriInput(false);
-  };
-
   const handleLogin = () => {
-    try {
-      const authUrl = spotifyAuth.getAuthUrl();
-      window.location.href = authUrl;
-    } catch (error) {
-      alert(error instanceof Error ? error.message : 'Failed to generate auth URL');
-      setShowClientIdInput(true);
-    }
+    const authUrl = spotifyAuth.getAuthUrl();
+    window.location.href = authUrl;
   };
 
   const handleLogout = () => {
@@ -107,132 +68,16 @@ export const Home: React.FC = () => {
 
         {/* Main Card */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
-          {/* Spotify Configuration */}
-          <div className="mb-6 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
-            <div className="font-semibold text-gray-900 dark:text-white mb-4">
-              Spotify Konfiguration
-            </div>
-
-            {/* Client ID */}
-            <div className="mb-4">
-              <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Client ID
+          {/* Spotify Configuration Info */}
+          <div className="mb-6 p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
+            <div className="flex items-center gap-2 text-green-800 dark:text-green-200">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <div>
+                <div className="font-semibold">Spotify ist konfiguriert</div>
+                <div className="text-sm opacity-90">Verbinden Sie sich mit Ihrem Spotify Premium Account</div>
               </div>
-              {showClientIdInput ? (
-                <div className="space-y-2">
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={clientId}
-                      onChange={(e) => setClientId(e.target.value)}
-                      placeholder="7275bd5076504740b45d57398f1ae2d8"
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
-                    />
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      onClick={handleSaveClientId}
-                      disabled={!clientId.trim()}
-                    >
-                      Save
-                    </Button>
-                  </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Get your Client ID from{' '}
-                    <a
-                      href="https://developer.spotify.com/dashboard"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 dark:text-blue-400 hover:underline"
-                    >
-                      Spotify Developer Dashboard
-                    </a>
-                  </p>
-                </div>
-              ) : (
-                <div className="flex items-center justify-between bg-white dark:bg-gray-700 px-3 py-2 rounded-md">
-                  <div className="flex-1 overflow-hidden">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                      {clientId}
-                    </div>
-                  </div>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={handleClearClientId}
-                  >
-                    Ändern
-                  </Button>
-                </div>
-              )}
-            </div>
-
-            {/* Redirect URI */}
-            <div>
-              <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Redirect URI
-              </div>
-              {showRedirectUriInput ? (
-                <div className="space-y-2">
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={redirectUri}
-                      onChange={(e) => setRedirectUri(e.target.value)}
-                      placeholder={redirectUri || 'https://s540d.github.io/CD-to-Spotify-PWA'}
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
-                    />
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      onClick={handleSaveRedirectUri}
-                      disabled={!redirectUri.trim()}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => setShowRedirectUriInput(false)}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Muss mit der Redirect URI in Ihrem Spotify App übereinstimmen
-                  </p>
-                </div>
-              ) : (
-                <div className="flex items-center justify-between bg-white dark:bg-gray-700 px-3 py-2 rounded-md">
-                  <div className="flex-1 overflow-hidden">
-                    <div className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                      {redirectUri}
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => setShowRedirectUriInput(true)}
-                    >
-                      Ändern
-                    </Button>
-                    {localStorage.getItem('spotify_redirect_uri') && (
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={handleClearRedirectUri}
-                      >
-                        Reset
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="mt-3 p-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded text-xs text-yellow-800 dark:text-yellow-200">
-              ⚠️ Wichtig: Diese Redirect URI muss in Ihrem Spotify App unter "Redirect URIs" eingetragen sein.
             </div>
           </div>
 
@@ -265,16 +110,10 @@ export const Home: React.FC = () => {
                 <Button
                   variant="primary"
                   onClick={handleLogin}
-                  disabled={!clientId}
                   className="w-full"
                 >
                   Mit Spotify verbinden
                 </Button>
-                {!clientId && (
-                  <p className="text-xs text-orange-600 dark:text-orange-400">
-                    Bitte konfigurieren Sie zuerst die Client ID
-                  </p>
-                )}
               </div>
             )}
           </div>
