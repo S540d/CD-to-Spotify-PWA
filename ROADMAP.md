@@ -1,64 +1,82 @@
 # Development Roadmap: CD Collection to Playlist
 
-**Ursprüngliche Gesamtdauer**: 14 Wochen (3,5 Monate)
 **Start**: Oktober 2025
-**Projektstatus**: Phase 1 abgeschlossen ✅, Phase 2 in Arbeit 🟡
+**Projektstatus**: Core Features komplett ✅, Player Implementation next 🟡
 
 ---
 
 ## Aktueller Status (Stand: 2025-10-28)
 
 ```
-Phase 1: Scan2Play          ████████████████  ✅ KOMPLETT (4 Wochen)
-Phase 2: Sammlung           ████████░░░░░░░░  🟡 50% (in Arbeit)
-Phase 3: Export & Verwaltung ░░░░░░░░░░░░░░░░  🔴 Geplant
-                             └─────────────┘
-                              ~3-5 Wochen verbleibend
+Phase 1: Core Features         ████████████████  ✅ KOMPLETT
+  - Scan2Play                  ████████████████  ✅
+  - Batch Import               ████████████████  ✅
+  - Local Storage              ████████████████  ✅
+  - CSV/m3u Export             ████████████████  ✅
+
+Phase 2: Player                ░░░░░░░░░░░░░░░░  🔴 NEXT
+Phase 3: Bugfixing Core        ░░░░░░░░░░░░░░░░  🔴 Geplant
+Phase 4: UX Improvements       ░░░░░░░░░░░░░░░░  🔴 Geplant
+Phase 5: Bugfixing UX          ░░░░░░░░░░░░░░░░  🔴 Geplant
+Phase 6: Production Ready      ░░░░░░░░░░░░░░░░  🔴 Geplant
+Phase 7: Advanced Features     ░░░░░░░░░░░░░░░░  🔴 Future
 ```
 
 ### ✅ Was bereits funktioniert:
 
-**Phase 1 - Scan2Play (KOMPLETT)**
+**CORE FEATURES (KOMPLETT)**
 - ✅ Barcode Scanner (Quagga2)
-- ✅ MusicBrainz Integration (Album Lookup)
-- ✅ Spotify OAuth & API
-- ✅ Scan2Play: Barcode → Sofort abspielen
+- ✅ MusicBrainz Integration (Album Lookup + Cover Art)
+- ✅ Spotify OAuth & API Integration
+- ✅ PlayMode: Scan → Sofort abspielen
+- ✅ ImportMode: Batch Scanning
+- ✅ ManageMode: Sammlung anzeigen/löschen
+- ✅ IndexedDB: Lokale Speicherung
+- ✅ CSV Export (mit UTF-8 BOM, Excel-kompatibel)
+- ✅ m3u Export (Extended M3U, Spotify URIs)
+- ✅ Playlist Creation (öffnet in Spotify)
 - ✅ PWA installierbar
 - ✅ Deployed auf GitHub Pages
 
-**Phase 2 - Sammlung (TEILWEISE)**
-- ✅ IndexedDB Storage (idb)
-- ✅ Import Mode (Batch Scanning)
-- ✅ Manage Mode (Sammlung anzeigen)
-- ✅ Album-Karten mit Covers
-- ✅ Löschen einzelner Alben
-- ⚠️ Suche/Filter - FEHLT
-- ⚠️ Edit/Bulk Operations - FEHLT
-- ⚠️ Statistiken - FEHLT
-
-**Phase 3 - Export (AUSSTEHEND)**
-- ❌ CSV Export
-- ❌ m3u Export
-- ❌ CSV → m3u Converter
-- ❌ Erweiterte Verwaltung
-- ❌ Playlist-Erstellung
+**NOCH AUSSTEHEND**
+- ❌ Eingebetteter Player in der App
+- ❌ Search & Filter
+- ❌ Edit/Bulk Operations
+- ❌ Statistics & Insights
+- ❌ UX Polish (Loading States, Error Handling)
+- ❌ Accessibility Improvements
 
 ---
 
-## 🎯 NEXT: 3-Phasen Implementierungsplan
+## 🎯 NEUE PHASEN-STRUKTUR
 
-Basierend auf dem aktuellen Stand priorisieren wir die Implementierung wie folgt:
+Fokus auf **Grundfunktionen → Stabilität → Polish → Erweiterte Features**
 
-### Phase 1: Technische Grundfunktionen (8-12 Tage)
-**Priorität: HOCH** - Core-Features für Produktivnutzung
+### Phase 2: Grundlegende Player Implementierung (3-4 Tage)
+**Priorität: HOCH** ⭐⭐⭐
+**Ziel**: User kann in der App Musik abspielen, nicht nur extern in Spotify
 
-### Phase 2: UX Verbesserungen (5-7 Tage)
-**Priorität: MITTEL** - Polish & Accessibility
+### Phase 3: Bugfixing Grundfunktionen (2-3 Tage)
+**Priorität: HOCH** ⭐⭐⭐
+**Ziel**: Alle Core Features sind stabil und zuverlässig
 
-### Phase 3: Erweiterte Abspielfunktion (4-6 Tage)
-**Priorität: NIEDRIG** - Nice-to-have Features
+### Phase 4: Grundlegende UX Verbesserungen (3-4 Tage)
+**Priorität: MITTEL** ⭐⭐
+**Ziel**: App ist benutzerfreundlich und professionell
 
-Detaillierte Beschreibung siehe unten in "Detaillierter Implementierungsplan".
+### Phase 5: Bugfixing UX und Funktionalität (2-3 Tage)
+**Priorität: MITTEL** ⭐⭐
+**Ziel**: UX ist poliert und fehlerfrei
+
+### Phase 6: Production Ready (2-3 Tage)
+**Priorität: HOCH** ⭐⭐⭐
+**Ziel**: App ist launch-ready
+
+### Phase 7: Erweiterte Funktionen (8-12 Tage)
+**Priorität: NIEDRIG** ⭐
+**Ziel**: Nice-to-have Features (Search, Filter, Stats, etc.)
+
+**Total**: ~20-29 Tage (~4-6 Wochen)
 
 ---
 
@@ -398,382 +416,380 @@ spotify:track:yyyy
 
 ## 📋 Detaillierter Implementierungsplan (Aktualisiert 2025-10-28)
 
-Dieser Plan ergänzt die ursprüngliche Roadmap mit einem fokussierten Ansatz für die verbleibenden Features.
+**Strategie**: Grundfunktionen → Stabilität → Polish → Erweiterte Features
 
 ---
 
-### 🔧 PHASE 1: TECHNISCHE GRUNDFUNKTIONEN
+### ✅ PHASE 1: CORE FEATURES (ABGESCHLOSSEN)
 
-**Ziel**: Core-Features implementieren, die für Produktivnutzung essentiell sind
-**Dauer**: 8-12 Tage (2-3 Wochen)
+**Ziel**: Alle essentiellen Funktionen implementieren
+**Dauer**: ~4 Wochen
+**Status**: ✅ KOMPLETT
+
+**Was fertig ist:**
+- ✅ Barcode Scanner, MusicBrainz, Spotify API
+- ✅ Scan2Play, Import Mode, Manage Mode
+- ✅ IndexedDB Storage
+- ✅ CSV/m3u Export
+- ✅ PWA Setup
+
+---
+
+### 🎵 PHASE 2: GRUNDLEGENDE PLAYER IMPLEMENTIERUNG
+
+**Ziel**: Music Playback direkt in der App mit Spotify Web Playback SDK
+**Dauer**: 3-4 Tage
 **Priorität**: HOCH ⭐⭐⭐
+**Status**: 🔴 NEXT
 
-#### 1.1 Export-Funktionen (2-3 Tage)
+**Wichtig**: Der User kann derzeit schon Musik abspielen, aber nur durch externes Öffnen in Spotify. Wir implementieren einen eingebetteten Player IN der App mit dem Spotify Web Playback SDK.
 
-**User Story**: *"Ich möchte meine CD-Sammlung exportieren, um sie in Excel zu bearbeiten oder in Spotify zu importieren."*
+#### 2.1 Spotify Web Playback SDK Integration (1-2 Tage)
 
 **Features:**
-- [ ] **CSV Export**
-  - Download-Button in ManageMode mit Icon
-  - Format: `Artist, Album, Year, Genre, Barcode, Spotify_URI, Cover_URL, Date_Added`
-  - Dateiname: `cd-collection-YYYY-MM-DD.csv`
-  - UTF-8 Encoding mit BOM (für Excel-Kompatibilität)
-  - Header-Zeile mit Spaltenüberschriften
-  - Test mit Sonderzeichen (Umlaute, Akzente)
-
-- [ ] **m3u Playlist Export**
-  - Extended M3U Format (#EXTM3U, #EXTINF)
-  - Spotify Track URIs: `spotify:track:xxxxx`
-  - Nur Alben mit Spotify URI exportieren
-  - Option: "Gesamte Sammlung" oder "Ausgewählte Alben"
-  - Dateiname: `cd-playlist-YYYY-MM-DD.m3u`
-
-- [ ] **CSV → m3u Converter**
-  - Upload CSV Datei
-  - Parsing mit Validation
-  - Preview-Ansicht vor Export
-  - Fehlerbehandlung: Fehlende Spotify URIs
-  - Download m3u nach Konvertierung
+- [ ] Spotify Web Playback SDK laden und initialisieren
+- [ ] Device Registration (Player erscheint als "CD Collection Web Player" in Spotify)
+- [ ] Token Management (Access Token refresh)
+- [ ] Player State Management (Track Info, Position, Duration)
+- [ ] Error Handling (Premium Required, Device Not Available)
 
 **Technische Details:**
 ```typescript
-// Export Service
-interface ExportService {
-  exportToCSV(albums: Album[]): Blob;
-  exportToM3U(albums: Album[]): Blob;
-  parseCSV(file: File): Promise<Album[]>;
-  convertCSVToM3U(csv: Album[]): Blob;
+// Web Playback SDK Integration
+interface SpotifyPlayer {
+  connect(): Promise<boolean>;
+  disconnect(): void;
+  getCurrentState(): Promise<PlaybackState | null>;
+  pause(): Promise<void>;
+  resume(): Promise<void>;
+  togglePlay(): Promise<void>;
+  seek(position_ms: number): Promise<void>;
+  previousTrack(): Promise<void>;
+  nextTrack(): Promise<void>;
+  setVolume(volume: number): Promise<void>;
+}
+
+interface PlaybackState {
+  track_window: {
+    current_track: Track;
+    previous_tracks: Track[];
+    next_tracks: Track[];
+  };
+  position: number;
+  duration: number;
+  paused: boolean;
 }
 ```
 
 **Acceptance Criteria:**
-- ✅ CSV öffnet korrekt in Excel/Google Sheets
-- ✅ m3u ist importierbar in Spotify-Tools
-- ✅ CSV → m3u Konvertierung funktioniert
-- ✅ Umlaute und Sonderzeichen korrekt dargestellt
+- ✅ SDK lädt erfolgreich
+- ✅ Player erscheint als Device in Spotify
+- ✅ Play/Pause funktioniert
+- ✅ Premium-Check mit sinnvoller Fehlermeldung
 
-**Dateien zu erstellen/ändern:**
-- `app/src/services/export.ts` (NEU)
-- `app/src/pages/ManageMode.tsx` (UPDATE - Export Buttons)
-- `app/src/components/ui/ExportModal.tsx` (NEU - Optional)
+**Hinweis:** Spotify Web Playback SDK benötigt Spotify Premium.
 
 ---
 
-#### 1.2 Search & Filter (1-2 Tage)
-
-**User Story**: *"Ich habe 200 CDs gescannt und möchte schnell ein bestimmtes Album finden."*
+#### 2.2 Mini-Player UI (1 Tag)
 
 **Features:**
-- [ ] **Search Bar**
-  - Eingabefeld mit Lupe-Icon
-  - Suche nach: Artist, Album Title
-  - Live-Filter (client-side)
-  - Debounced Input (300ms delay)
-  - "Clear" Button (X)
-  - Keyboard Shortcut: "/" fokussiert Suche
+- [ ] Persistent Bottom Bar (fixed position)
+- [ ] Album Cover Thumbnail
+- [ ] Track Info: Artist - Title
+- [ ] Play/Pause Button
+- [ ] Skip Previous/Next Buttons
+- [ ] Progress Bar (Seek-fähig)
+- [ ] Volume Control
+- [ ] "Open in Spotify" Link
 
-- [ ] **Filter Optionen**
-  - Dropdown "Spotify Status":
-    - Alle Alben
-    - Mit Spotify ✅
-    - Ohne Spotify ❌
-  - Sortierung:
-    - Neueste zuerst (Standard)
-    - Artist A-Z
-    - Album A-Z
-    - Jahr aufsteigend/absteigend
-
-- [ ] **URL State (Optional)**
-  - Filter/Suche in URL Parameter
-  - Shareable Links: `/manage?search=pink&sort=artist`
-
-**Technische Details:**
-```typescript
-interface FilterState {
-  searchQuery: string;
-  spotifyStatus: 'all' | 'with_spotify' | 'without_spotify';
-  sortBy: 'newest' | 'artist_asc' | 'album_asc' | 'year_asc' | 'year_desc';
-}
-
-function filterAlbums(albums: Album[], filter: FilterState): Album[]
+**UI Layout:**
+```
+┌────────────────────────────────────────────────┐
+│ [Cover] Artist - Track Title  [◄] [▶/II] [►]  │
+│         ●──────────────● 1:23 / 3:45    🔊 70% │
+└────────────────────────────────────────────────┘
 ```
 
 **Acceptance Criteria:**
-- ✅ Suche funktioniert mit < 100ms Delay
-- ✅ Filter kombinierbar (Suche + Spotify Status + Sortierung)
-- ✅ Responsive auf Mobile
+- ✅ Mini-Player ist auf allen Seiten sichtbar
+- ✅ Responsive (Mobile: vereinfachte Version)
+- ✅ Smooth Animations
+- ✅ Progress Bar aktualisiert sich in Echtzeit
 
-**Dateien zu ändern:**
-- `app/src/pages/ManageMode.tsx` (UPDATE)
-- `app/src/components/ui/SearchBar.tsx` (NEU)
-- `app/src/components/ui/FilterDropdown.tsx` (NEU)
+**Dateien:**
+- `app/src/components/player/MiniPlayer.tsx` (NEU)
+- `app/src/contexts/PlayerContext.tsx` (NEU)
+- `app/src/hooks/useSpotifyPlayer.ts` (NEU)
 
 ---
 
-#### 1.3 Album Management (2-3 Tage)
-
-**User Story**: *"Ich möchte Metadaten korrigieren, Alben manuell hinzufügen und mehrere Alben auf einmal löschen."*
+#### 2.3 Player State Management (1 Tag)
 
 **Features:**
-- [ ] **Edit Album Metadata**
-  - "Edit" Button auf AlbumCard
-  - Modal/Dialog mit Formular
-  - Felder: Artist, Title, Year, Genre, Spotify URI
-  - Validation (required fields)
-  - "Save" & "Cancel" Buttons
-  - Optimistic UI Update
+- [ ] React Context für globalen Player State
+- [ ] Play Album aus ManageMode
+- [ ] Play Album aus ImportMode
+- [ ] Play Album aus PlayMode
+- [ ] Queue Management (Basic)
+- [ ] Playback Events (Track Changed, Playback Stopped)
 
-- [ ] **Manual Album Entry**
-  - "+ Manuell hinzufügen" Button in ManageMode
-  - Formular mit allen Feldern
-  - Optional: Spotify-Suche Integration
-  - Optional: Cover URL Eingabe
-  - Generiere UUID als Barcode-Ersatz
-
-- [ ] **Bulk Operations**
-  - Checkbox auf jeder AlbumCard
-  - "Alle auswählen" / "Auswahl aufheben" Toggle
-  - Bulk Actions Bar (fixed bottom):
-    - "X Alben ausgewählt"
-    - "Löschen" Button
-    - "Exportieren" Button (nur ausgewählte)
-  - Bestätigungs-Dialog für Bulk Delete
-
-**Technische Details:**
+**Context API:**
 ```typescript
-interface AlbumFormData {
-  artist: string;
-  title: string;
-  year?: number;
-  genre?: string;
-  spotifyUri?: string;
-  coverUrl?: string;
-}
+interface PlayerContextValue {
+  player: SpotifyPlayer | null;
+  currentTrack: Track | null;
+  isPlaying: boolean;
+  position: number;
+  duration: number;
+  volume: number;
 
-// Bulk Selection State
-const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  playAlbum(albumUri: string): Promise<void>;
+  togglePlay(): Promise<void>;
+  nextTrack(): Promise<void>;
+  previousTrack(): Promise<void>;
+  seek(position: number): Promise<void>;
+  setVolume(volume: number): Promise<void>;
+}
 ```
 
 **Acceptance Criteria:**
-- ✅ Edits werden persistent in IndexedDB gespeichert
-- ✅ Manual Entry funktioniert ohne Barcode
-- ✅ Bulk Delete mit Confirmation
-- ✅ UI ist intuitiv und responsive
-
-**Dateien zu ändern:**
-- `app/src/pages/ManageMode.tsx` (UPDATE - Bulk Selection)
-- `app/src/components/ui/AlbumCard.tsx` (UPDATE - Edit Button, Checkbox)
-- `app/src/components/ui/AlbumEditModal.tsx` (NEU)
-- `app/src/components/ui/AlbumAddModal.tsx` (NEU)
-- `app/src/services/db.ts` (UPDATE - updateAlbum)
+- ✅ Player State ist global verfügbar
+- ✅ Alle Modi können Player verwenden
+- ✅ Keine State-Konflikte zwischen Komponenten
 
 ---
 
-#### 1.4 Statistics & Insights (1-2 Tage)
-
-**User Story**: *"Ich möchte Statistiken über meine Sammlung sehen: Wie viele Alben? Welche Artists?"*
+#### 2.4 Premium Check & Fallback (0.5 Tag)
 
 **Features:**
-- [ ] **Stats Widget (Manage Mode Header)**
-  - Karten-Layout (Cards):
-    - Gesamt-Anzahl Alben
-    - Anzahl mit Spotify
-    - Anzahl ohne Spotify
-    - Anzahl Artists (unique)
-
-- [ ] **Top Lists**
-  - Top 10 Artists (nach Album-Anzahl)
-  - Optional: Top Genres (wenn MusicBrainz Genre liefert)
-
-- [ ] **Visualizations (Optional)**
-  - Balkendiagramm: Alben pro Dekade (1970s, 1980s, ...)
-  - Pie Chart: Genres
-  - Optional: Recharts oder Chart.js
-
-**Technische Details:**
-```typescript
-interface CollectionStats {
-  totalAlbums: number;
-  withSpotify: number;
-  withoutSpotify: number;
-  uniqueArtists: number;
-  topArtists: { artist: string; count: number }[];
-  albumsByDecade: { decade: string; count: number }[];
-}
-
-async function getCollectionStats(albums: Album[]): Promise<CollectionStats>
-```
+- [ ] Premium Status prüfen (Spotify API: `/me`)
+- [ ] Fallback UI für Free Users
+- [ ] Clear Error Message: "Web Playback requires Spotify Premium"
+- [ ] "Open in Spotify App" Button als Alternative
 
 **Acceptance Criteria:**
-- ✅ Stats werden schnell berechnet (< 500ms für 1000 Alben)
-- ✅ Responsive Layout
-- ✅ Charts sind optional (kann ohne gestartet werden)
-
-**Dateien zu ändern:**
-- `app/src/pages/ManageMode.tsx` (UPDATE - Stats Widget)
-- `app/src/components/ui/StatsCard.tsx` (NEU)
-- `app/src/utils/statistics.ts` (NEU)
+- ✅ Free Users bekommen klare Meldung
+- ✅ Kein App-Crash bei Free Accounts
+- ✅ Alternative (extern in Spotify öffnen) funktioniert
 
 ---
 
-### 🎨 PHASE 2: UX VERBESSERUNGEN
+### 🐛 PHASE 3: BUGFIXING GRUNDFUNKTIONEN
 
-**Ziel**: App benutzerfreundlicher, zugänglicher und professioneller machen
-**Dauer**: 5-7 Tage
+**Ziel**: Alle Core Features sind stabil und zuverlässig
+**Dauer**: 2-3 Tage
+**Priorität**: HOCH ⭐⭐⭐
+**Status**: 🔴 Geplant
+
+**Focus Areas:**
+- [ ] Barcode Scanner Edge Cases
+  - Schlechte Lichtverhältnisse
+  - Beschädigte Barcodes
+  - Kamera-Permission Handling
+
+- [ ] MusicBrainz API
+  - Timeout Handling
+  - Rate Limit Errors
+  - Album nicht gefunden → bessere UX
+
+- [ ] Spotify API
+  - Token Refresh
+  - Network Errors
+  - Rate Limits
+
+- [ ] IndexedDB
+  - Storage Quota Exceeded
+  - Migration Errors
+  - Corrupted Data Handling
+
+- [ ] CSV/m3u Export
+  - Sonderzeichen Testing (Umlaute, Akzente)
+  - Große Sammlungen (1000+ Alben)
+  - Browser Kompatibilität
+
+**Testing:**
+- [ ] E2E Tests für kritische Flows
+- [ ] Error Scenarios testen
+- [ ] Cross-Browser Testing (Chrome, Safari, Firefox)
+
+---
+
+### 🎨 PHASE 4: GRUNDLEGENDE UX VERBESSERUNGEN
+
+**Ziel**: App ist benutzerfreundlich und professionell
+**Dauer**: 3-4 Tage
 **Priorität**: MITTEL ⭐⭐
+**Status**: 🔴 Geplant
 
-#### 2.1 Loading States & Feedback (1 Tag)
+**Features:**
+- [ ] **Loading States**
+  - Skeleton Screens statt Spinner
+  - Progress Indicators für Batch-Operationen
+  - Smooth Transitions
 
-- [ ] Skeleton Screens statt Spinner
-- [ ] Progress Indicators für Batch-Operationen
-- [ ] Toast Improvements (Action Buttons, bessere Positionierung)
+- [ ] **Error Handling UI**
+  - Freundliche Error Messages
+  - Retry Buttons
+  - Graceful Degradation (Offline)
 
-#### 2.2 Error Handling (1 Tag)
+- [ ] **Empty States**
+  - Illustration + Hilfetext
+  - Call-to-Action Buttons
+  - Onboarding für Erstnutzer
 
-- [ ] Graceful Degradation (Offline-Modus, API Fehler mit Retry)
-- [ ] Error Boundaries (React Error Boundary)
+- [ ] **Toast Improvements**
+  - Action Buttons (z.B. "Undo")
+  - Bessere Positionierung (Mobile)
+  - Icons für Toast-Typen
 
-#### 2.3 Accessibility (1-2 Tage)
+- [ ] **Responsive Optimierungen**
+  - Touch-freundliche Buttons (min 44x44px)
+  - Mobile Navigation verbessern
+  - Tablet Layout optimieren
 
-- [ ] Keyboard Navigation verbessern
-- [ ] ARIA Labels hinzufügen
-- [ ] Color Contrast prüfen (WCAG AA)
-- [ ] Screen Reader Testing
-
-#### 2.4 Responsive & Mobile UX (1 Tag)
-
-- [ ] Touch-freundliche Buttons (min 44x44px)
-- [ ] Swipe Gestures (Optional: swipe to delete)
-- [ ] Bottom Sheet Modals für Mobile
-
-#### 2.5 Empty States (1 Tag)
-
-- [ ] Ansprechende Empty States mit Illustration
-- [ ] Call-to-Action Buttons
-- [ ] Onboarding-Hinweise für Erstnutzer
+**Acceptance Criteria:**
+- ✅ Lighthouse Score > 85
+- ✅ Keine Layout Shifts
+- ✅ Smooth auf Mobile
 
 ---
 
-### 🎵 PHASE 3: ERWEITERTE ABSPIELFUNKTION
+### 🐛 PHASE 5: BUGFIXING UX UND FUNKTIONALITÄT
 
-**Ziel**: Playback-Features erweitern (aktuell nur Scan2Play vorhanden)
-**Dauer**: 4-6 Tage
+**Ziel**: UX ist poliert und fehlerfrei
+**Dauer**: 2-3 Tage
+**Priorität**: MITTEL ⭐⭐
+**Status**: 🔴 Geplant
+
+**Focus Areas:**
+- [ ] UI Bugs fixen (gefunden in Phase 4)
+- [ ] Performance Optimierungen
+- [ ] Accessibility Verbesserungen
+  - Keyboard Navigation
+  - Screen Reader Support
+  - Color Contrast (WCAG AA)
+- [ ] Mobile UX Feinschliff
+- [ ] Dark Mode Polish
+
+**Testing:**
+- [ ] User Testing (5-10 Beta-Nutzer)
+- [ ] Accessibility Audit (axe DevTools)
+- [ ] Performance Audit (Lighthouse)
+
+---
+
+### 🚀 PHASE 6: PRODUCTION READY
+
+**Ziel**: App ist launch-ready
+**Dauer**: 2-3 Tage
+**Priorität**: HOCH ⭐⭐⭐
+**Status**: 🔴 Geplant
+
+**Checklist:**
+- [ ] **Security Audit**
+  - Secrets nicht im Code
+  - HTTPS everywhere
+  - Input Validation
+
+- [ ] **Performance Optimization**
+  - Bundle Size < 500KB
+  - Lighthouse > 90 (alle Kategorien)
+  - Service Worker Caching optimieren
+
+- [ ] **Documentation**
+  - README aktualisieren
+  - Deployment Guide
+  - User Documentation (How-to)
+
+- [ ] **Testing**
+  - E2E Tests komplett
+  - Manual Testing (alle Flows)
+  - Cross-Browser Testing
+
+- [ ] **Launch Vorbereitung**
+  - GitHub Pages Deployment testen
+  - Analytics Setup (optional)
+  - Error Monitoring (Sentry, optional)
+
+**Deliverables:**
+- ✅ Production-ready Build
+- ✅ Vollständige Dokumentation
+- ✅ Launch Checklist abgehakt
+
+---
+
+### 🌟 PHASE 7: ERWEITERTE FUNKTIONEN
+
+**Ziel**: Nice-to-have Features
+**Dauer**: 8-12 Tage
 **Priorität**: NIEDRIG ⭐
+**Status**: 🔴 Future
 
-#### 3.1 Player Controls (2-3 Tage)
+**Features (von Phase 1 verschoben):**
 
-- [ ] Mini-Player (Persistent Bottom Bar)
-- [ ] Spotify Web Playback SDK Integration
-- [ ] Play/Pause/Skip Buttons
-- [ ] Current Track anzeigen
+#### 7.1 Search & Filter (1-2 Tage)
+- [ ] Search Bar (Artist, Album)
+- [ ] Filter (Spotify Status)
+- [ ] Sortierung (Artist, Album, Datum)
 
-#### 3.2 Queue Management (1-2 Tage)
+#### 7.2 Album Management (2-3 Tage)
+- [ ] Edit Album Metadata
+- [ ] Manual Album Entry
+- [ ] Bulk Operations (Multi-Select, Bulk Delete)
 
-- [ ] "Als Nächstes" Liste
-- [ ] Drag & Drop Reihenfolge
-- [ ] Shuffle & Repeat
+#### 7.3 Statistics & Insights (1-2 Tage)
+- [ ] Collection Stats
+- [ ] Top Artists
+- [ ] Alben pro Dekade
+- [ ] Optional: Charts (Recharts)
 
-#### 3.3 Smart Playlists (1 Tag)
+#### 7.4 CSV → m3u Converter (1 Tag)
+- [ ] Upload CSV
+- [ ] Parse & Validate
+- [ ] Convert to m3u
+- [ ] Download
 
-- [ ] "Alle meine CDs" Playlist erstellen
-- [ ] "Zuletzt gescannt" Playlist
-- [ ] Genre-basierte Playlists
+#### 7.5 Additional Features (3-4 Tage)
+- [ ] Queue Management (Advanced)
+- [ ] Smart Playlists
+- [ ] Album Reviews/Notes
+- [ ] Sharing Features
+- [ ] Multi-Language (i18n)
+
+**Total Phase 7**: 8-12 Tage (nach Production Launch)
 
 ---
 
-## 📊 Zeitplan & Priorisierung
+## 📊 Gesamter Zeitplan
 
-| Phase | Dauer | Status | Start | Ende |
-|-------|-------|--------|-------|------|
-| **Phase 1.1**: CSV/m3u Export | 2-3 Tage | 🔴 Ausstehend | TBD | TBD |
-| **Phase 1.2**: Search & Filter | 1-2 Tage | 🔴 Ausstehend | TBD | TBD |
-| **Phase 1.3**: Album Management | 2-3 Tage | 🔴 Ausstehend | TBD | TBD |
-| **Phase 1.4**: Statistics | 1-2 Tage | 🔴 Ausstehend | TBD | TBD |
-| **Phase 2**: UX Verbesserungen | 5-7 Tage | 🔴 Geplant | TBD | TBD |
-| **Phase 3**: Abspielfunktion | 4-6 Tage | 🔴 Optional | TBD | TBD |
-| **TOTAL** | **17-25 Tage** | (~3-5 Wochen) | | |
+| Phase | Dauer | Priorität | Status |
+|-------|-------|-----------|--------|
+| **Phase 1**: Core Features | ~4 Wochen | ⭐⭐⭐ | ✅ KOMPLETT |
+| **Phase 2**: Player | 3-4 Tage | ⭐⭐⭐ | 🔴 NEXT |
+| **Phase 3**: Bugfixing Core | 2-3 Tage | ⭐⭐⭐ | 🔴 Geplant |
+| **Phase 4**: UX Improvements | 3-4 Tage | ⭐⭐ | 🔴 Geplant |
+| **Phase 5**: Bugfixing UX | 2-3 Tage | ⭐⭐ | 🔴 Geplant |
+| **Phase 6**: Production Ready | 2-3 Tage | ⭐⭐⭐ | 🔴 Geplant |
+| **Phase 7**: Advanced Features | 8-12 Tage | ⭐ | 🔴 Future |
+| **TOTAL** | **~20-29 Tage** | **(~4-6 Wochen)** | |
 
 ---
 
-## 🎯 Nächster Schritt: CSV/m3u Export
+## 🎯 Nächster Schritt: Spotify Web Playback SDK
 
-**Warum zuerst Export?**
-1. ✅ Sofortiger Nutzen für Benutzer
-2. ✅ Unabhängig von anderen Features
-3. ✅ Schnell umsetzbar (2-3 Tage)
-4. ✅ Foundation für Playlist-Features
+**Warum zuerst Player?**
+1. ✅ Komplettes Feature für User-Experience
+2. ✅ Differenzierung von anderen CD-Apps
+3. ✅ In-App Playback ohne externe Apps
+4. ✅ Foundation für erweiterte Player-Features später
 
 **Implementierungsreihenfolge:**
-1. CSV Export Service erstellen
-2. Export Button in ManageMode hinzufügen
-3. m3u Export implementieren
-4. CSV → m3u Converter hinzufügen
-5. Testing & Documentation
-
----
-
-## Post-Launch (Nice-to-Have)
-
-Nach Launch (Woche 15+):
-
-### Features (Optional)
-- [ ] Apple Music Integration
-- [ ] Vinyl/Kassetten Support
-- [ ] QR-Code Generierung (für physische Sammlung)
-- [ ] Sharing: "Meine Top 10 Alben"
-- [ ] Multi-Language (i18n): Deutsch, Englisch, Französisch
-- [ ] Themes: Custom Color Schemes
-
-### Marketing & Community
-- [ ] GitHub README mit Screenshots
-- [ ] Demo Video (YouTube)
-- [ ] Product Hunt Launch
-- [ ] Reddit Post (r/selfhosted, r/DataHoarder)
-
----
-
-## Team & Rollen
-
-**Developer**: S540d (Full-Stack, PWA, Testing)
-**Designer**: (Optional, Tailwind UI reicht vorerst)
-**Beta-Tester**: 5-10 Nutzer (Phase 2 + 3)
-
----
-
-## Tools & Workflow
-
-### Development
-- **IDE**: VS Code + ESLint + Prettier
-- **Version Control**: Git + GitHub
-- **CI/CD**: GitHub Actions (Lint, Test, Deploy)
-- **Deployment**: GitHub Pages
-- **Monitoring**: Sentry (Fehler-Tracking)
-
-### Testing
-- **Unit**: Vitest
-- **E2E**: Playwright
-- **Accessibility**: axe DevTools
-- **Performance**: Lighthouse CI
-
-### Project Management
-- **Issues**: GitHub Issues (mit Labels: bug, feature, enhancement)
-- **Milestones**: GitHub Milestones
-- **Board**: GitHub Projects (Kanban)
-
----
-
-## Definition of Done (DoD)
-
-Ein Feature ist "Done" wenn:
-
-- ✅ Code ist geschrieben & funktioniert
-- ✅ Unit Tests vorhanden (> 60% Coverage)
-- ✅ E2E Test vorhanden (Happy Path)
-- ✅ Accessibility getestet (axe)
-- ✅ Code Review durchgeführt
-- ✅ Dokumentation aktualisiert
-- ✅ Deployed auf Staging/Production
-- ✅ User kann Feature nutzen
+1. SDK Integration & Device Registration
+2. Mini-Player UI Component
+3. Player State Management (React Context)
+4. Premium Check & Fallback UI
+5. Testing & Bug Fixes
 
 ---
 
@@ -783,8 +799,29 @@ Ein Feature ist "Done" wenn:
 |---------|-------|----------|
 | 1.0 | 2025-10-27 | Initiale Roadmap erstellt |
 | 2.0 | 2025-10-28 | Status aktualisiert: Phase 1 & 2 teilweise komplett. Detaillierter 3-Phasen Implementierungsplan hinzugefügt (Technische Grundfunktionen → UX → Playback) |
+| 3.0 | 2025-10-28 | Neue 7-Phasen-Struktur: Core Features (✅) → Player → Bugfixing → UX → Production → Advanced. Option B (Deep Links) verworfen, nur Spotify Web Playback SDK (Option A). CSV/m3u Export komplett ✅. Search/Filter/Stats verschoben auf Phase 7. |
 
 ---
 
-**Status**: ✅ Phase 1 komplett, Phase 2 50%, Phase 3 geplant
-**Nächste Schritte**: CSV/m3u Export implementieren (Phase 1.1)
+**Status**: ✅ Phase 1 (Core Features) komplett, Phase 2 (Player) NEXT
+**Nächste Schritte**: Spotify Web Playback SDK Implementation (Phase 2.1)
+
+## Post-Launch (Optional)
+
+Nach Production Launch (Phase 6) können folgende Features optional implementiert werden:
+
+### Marketing & Community
+- [ ] GitHub README mit Screenshots
+- [ ] Demo Video (YouTube)
+- [ ] Product Hunt Launch
+- [ ] Reddit Post (r/selfhosted, r/DataHoarder)
+
+### Optional Features (siehe Phase 7)
+- Apple Music Integration
+- Vinyl/Kassetten Support
+- QR-Code Generierung
+- Sharing Features
+- Multi-Language (i18n)
+
+---
+
