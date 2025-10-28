@@ -6,6 +6,7 @@ import { albumDb } from '../services/db';
 import { spotifyApi } from '../services/spotify';
 import { AlbumCard } from '../components/ui/AlbumCard';
 import { ToastContainer } from '../components/ui/Toast';
+import { exportAlbumsAsCSV, exportAlbumsAsM3U } from '../services/export';
 
 export const ManageMode: React.FC = () => {
   const navigate = useNavigate();
@@ -110,6 +111,38 @@ export const ManageMode: React.FC = () => {
     }
   };
 
+  const handleExportCSV = () => {
+    if (albums.length === 0) {
+      addToast('warning', 'No albums to export');
+      return;
+    }
+
+    try {
+      exportAlbumsAsCSV(albums);
+      addToast('success', `Exported ${albums.length} albums as CSV`);
+    } catch (_error) {
+      console.error('CSV export error:', _error);
+      addToast('error', 'Failed to export CSV');
+    }
+  };
+
+  const handleExportM3U = () => {
+    const albumsWithSpotify = albums.filter((a) => a.spotifyUri);
+
+    if (albumsWithSpotify.length === 0) {
+      addToast('error', 'No albums with Spotify URIs to export');
+      return;
+    }
+
+    try {
+      exportAlbumsAsM3U(albumsWithSpotify);
+      addToast('success', `Exported ${albumsWithSpotify.length} albums as m3u playlist`);
+    } catch (_error) {
+      console.error('m3u export error:', _error);
+      addToast('error', 'Failed to export m3u');
+    }
+  };
+
   const albumsWithSpotify = albums.filter((a) => a.spotifyUri).length;
 
   return (
@@ -163,6 +196,20 @@ export const ManageMode: React.FC = () => {
               disabled={albumsWithSpotify === 0}
             >
               Create Playlist ({albumsWithSpotify})
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={handleExportCSV}
+              disabled={albums.length === 0}
+            >
+              Export CSV
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={handleExportM3U}
+              disabled={albumsWithSpotify === 0}
+            >
+              Export m3u ({albumsWithSpotify})
             </Button>
             <Button variant="danger" onClick={handleClearAll} disabled={albums.length === 0}>
               Clear All
