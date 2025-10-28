@@ -8,9 +8,11 @@ import { spotifyApi } from '../services/spotify';
 import { albumDb } from '../services/db';
 import { AlbumCard } from '../components/ui/AlbumCard';
 import { ToastContainer } from '../components/ui/Toast';
+import { usePlayer } from '../contexts/PlayerContext';
 
 export const PlayMode: React.FC = () => {
   const navigate = useNavigate();
+  const { play } = usePlayer();
   const [isScanning, setIsScanning] = useState(false);
   const [currentAlbum, setCurrentAlbum] = useState<Album | undefined>(undefined);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -60,10 +62,10 @@ export const PlayMode: React.FC = () => {
       // Auto-play if Spotify URI is available
       if (album.spotifyUri) {
         try {
-          await spotifyApi.playAlbum(album.spotifyUri);
+          await play(album.spotifyUri);
           addToast('success', `Playing: ${album.title}`);
         } catch (_error) {
-          addToast('error', 'Could not play album. Make sure Spotify is active.');
+          addToast('error', 'Could not play album. Make sure you have Spotify Premium.');
         }
       } else {
         addToast('warning', 'Album not found on Spotify');
@@ -80,10 +82,10 @@ export const PlayMode: React.FC = () => {
     if (currentAlbum?.spotifyUri) {
       try {
         setIsProcessing(true);
-        await spotifyApi.playAlbum(currentAlbum.spotifyUri);
+        await play(currentAlbum.spotifyUri);
         addToast('success', 'Playing album');
       } catch (_error) {
-        addToast('error', 'Could not play album');
+        addToast('error', 'Could not play album. Make sure you have Spotify Premium.');
       } finally {
         setIsProcessing(false);
       }

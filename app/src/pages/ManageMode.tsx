@@ -7,9 +7,11 @@ import { spotifyApi } from '../services/spotify';
 import { AlbumCard } from '../components/ui/AlbumCard';
 import { ToastContainer } from '../components/ui/Toast';
 import { exportAlbumsAsCSV, exportAlbumsAsM3U } from '../services/export';
+import { usePlayer } from '../contexts/PlayerContext';
 
 export const ManageMode: React.FC = () => {
   const navigate = useNavigate();
+  const { play } = usePlayer();
   const [albums, setAlbums] = useState<Album[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [toasts, setToasts] = useState<ToastType[]>([]);
@@ -52,10 +54,10 @@ export const ManageMode: React.FC = () => {
     }
 
     try {
-      await spotifyApi.playAlbum(album.spotifyUri);
+      await play(album.spotifyUri);
       addToast('success', `Playing: ${album.title}`);
     } catch (_error) {
-      addToast('error', 'Could not play album. Make sure Spotify is active.');
+      addToast('error', 'Could not play album. Make sure you have Spotify Premium.');
     }
   };
 

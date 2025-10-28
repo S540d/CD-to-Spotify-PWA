@@ -4,18 +4,23 @@ import { ImportMode } from './pages/ImportMode';
 import { PlayMode } from './pages/PlayMode';
 import { ManageMode } from './pages/ManageMode';
 import { OfflineIndicator } from './components/layout/OfflineIndicator';
+import { PlayerProvider } from './contexts/PlayerContext';
+import { MiniPlayer } from './components/player/MiniPlayer';
 
 function App() {
   return (
-    <Router>
-      <OfflineIndicator />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/import" element={<ImportMode />} />
-        <Route path="/play" element={<PlayMode />} />
-        <Route path="/manage" element={<ManageMode />} />
-      </Routes>
-    </Router>
+    <PlayerProvider>
+      <Router>
+        <OfflineIndicator />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/import" element={<ImportMode />} />
+          <Route path="/play" element={<PlayMode />} />
+          <Route path="/manage" element={<ManageMode />} />
+        </Routes>
+        <MiniPlayer />
+      </Router>
+    </PlayerProvider>
   );
 }
 

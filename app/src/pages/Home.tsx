@@ -8,14 +8,8 @@ export const Home: React.FC = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [albumCount, setAlbumCount] = useState(0);
-  const [redirectUri, setRedirectUri] = useState('');
-  const [showRedirectUriInput, setShowRedirectUriInput] = useState(false);
 
   useEffect(() => {
-    // Load saved Redirect URI (for display purposes)
-    const savedRedirectUri = spotifyAuth.getRedirectUri();
-    setRedirectUri(savedRedirectUri);
-
     // Check if user is authenticated
     setIsAuthenticated(spotifyAuth.isAuthenticated());
 
