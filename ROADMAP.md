@@ -1,20 +1,64 @@
 # Development Roadmap: CD Collection to Playlist
 
-**Geschätzte Gesamtdauer**: 14 Wochen (3,5 Monate)
-**Start**: TBD
-**Projektstatus**: Vision & Planung abgeschlossen
+**Ursprüngliche Gesamtdauer**: 14 Wochen (3,5 Monate)
+**Start**: Oktober 2025
+**Projektstatus**: Phase 1 abgeschlossen ✅, Phase 2 in Arbeit 🟡
 
 ---
 
-## Überblick
+## Aktueller Status (Stand: 2025-10-28)
 
 ```
-Phase 1: Scan2Play          ████░░░░░░░░░░  (4 Wochen)
-Phase 2: Sammlung           ░░░░██████░░░░  (6 Wochen)
-Phase 3: Export & Verwaltung ░░░░░░░░░████  (4 Wochen)
+Phase 1: Scan2Play          ████████████████  ✅ KOMPLETT (4 Wochen)
+Phase 2: Sammlung           ████████░░░░░░░░  🟡 50% (in Arbeit)
+Phase 3: Export & Verwaltung ░░░░░░░░░░░░░░░░  🔴 Geplant
                              └─────────────┘
-                              14 Wochen
+                              ~3-5 Wochen verbleibend
 ```
+
+### ✅ Was bereits funktioniert:
+
+**Phase 1 - Scan2Play (KOMPLETT)**
+- ✅ Barcode Scanner (Quagga2)
+- ✅ MusicBrainz Integration (Album Lookup)
+- ✅ Spotify OAuth & API
+- ✅ Scan2Play: Barcode → Sofort abspielen
+- ✅ PWA installierbar
+- ✅ Deployed auf GitHub Pages
+
+**Phase 2 - Sammlung (TEILWEISE)**
+- ✅ IndexedDB Storage (idb)
+- ✅ Import Mode (Batch Scanning)
+- ✅ Manage Mode (Sammlung anzeigen)
+- ✅ Album-Karten mit Covers
+- ✅ Löschen einzelner Alben
+- ⚠️ Suche/Filter - FEHLT
+- ⚠️ Edit/Bulk Operations - FEHLT
+- ⚠️ Statistiken - FEHLT
+
+**Phase 3 - Export (AUSSTEHEND)**
+- ❌ CSV Export
+- ❌ m3u Export
+- ❌ CSV → m3u Converter
+- ❌ Erweiterte Verwaltung
+- ❌ Playlist-Erstellung
+
+---
+
+## 🎯 NEXT: 3-Phasen Implementierungsplan
+
+Basierend auf dem aktuellen Stand priorisieren wir die Implementierung wie folgt:
+
+### Phase 1: Technische Grundfunktionen (8-12 Tage)
+**Priorität: HOCH** - Core-Features für Produktivnutzung
+
+### Phase 2: UX Verbesserungen (5-7 Tage)
+**Priorität: MITTEL** - Polish & Accessibility
+
+### Phase 3: Erweiterte Abspielfunktion (4-6 Tage)
+**Priorität: NIEDRIG** - Nice-to-have Features
+
+Detaillierte Beschreibung siehe unten in "Detaillierter Implementierungsplan".
 
 ---
 
@@ -343,9 +387,328 @@ spotify:track:yyyy
 
 | Meilenstein | Datum | Status |
 |-------------|-------|--------|
-| **M1**: Scan2Play funktioniert | TBD (Woche 4) | 🔴 Ausstehend |
-| **M2**: Batch-Import + PWA | TBD (Woche 10) | 🔴 Ausstehend |
-| **M3**: Export + Launch | TBD (Woche 14) | 🔴 Ausstehend |
+| **M1**: Scan2Play funktioniert | Oktober 2025 | ✅ ABGESCHLOSSEN |
+| **M2**: Batch-Import + PWA | Oktober 2025 | ✅ ABGESCHLOSSEN |
+| **M3**: Export-Funktionen | TBD | 🟡 In Arbeit |
+| **M4**: Search & Management | TBD | 🔴 Geplant |
+| **M5**: UX Polish | TBD | 🔴 Geplant |
+| **M6**: Production Ready | TBD | 🔴 Geplant |
+
+---
+
+## 📋 Detaillierter Implementierungsplan (Aktualisiert 2025-10-28)
+
+Dieser Plan ergänzt die ursprüngliche Roadmap mit einem fokussierten Ansatz für die verbleibenden Features.
+
+---
+
+### 🔧 PHASE 1: TECHNISCHE GRUNDFUNKTIONEN
+
+**Ziel**: Core-Features implementieren, die für Produktivnutzung essentiell sind
+**Dauer**: 8-12 Tage (2-3 Wochen)
+**Priorität**: HOCH ⭐⭐⭐
+
+#### 1.1 Export-Funktionen (2-3 Tage)
+
+**User Story**: *"Ich möchte meine CD-Sammlung exportieren, um sie in Excel zu bearbeiten oder in Spotify zu importieren."*
+
+**Features:**
+- [ ] **CSV Export**
+  - Download-Button in ManageMode mit Icon
+  - Format: `Artist, Album, Year, Genre, Barcode, Spotify_URI, Cover_URL, Date_Added`
+  - Dateiname: `cd-collection-YYYY-MM-DD.csv`
+  - UTF-8 Encoding mit BOM (für Excel-Kompatibilität)
+  - Header-Zeile mit Spaltenüberschriften
+  - Test mit Sonderzeichen (Umlaute, Akzente)
+
+- [ ] **m3u Playlist Export**
+  - Extended M3U Format (#EXTM3U, #EXTINF)
+  - Spotify Track URIs: `spotify:track:xxxxx`
+  - Nur Alben mit Spotify URI exportieren
+  - Option: "Gesamte Sammlung" oder "Ausgewählte Alben"
+  - Dateiname: `cd-playlist-YYYY-MM-DD.m3u`
+
+- [ ] **CSV → m3u Converter**
+  - Upload CSV Datei
+  - Parsing mit Validation
+  - Preview-Ansicht vor Export
+  - Fehlerbehandlung: Fehlende Spotify URIs
+  - Download m3u nach Konvertierung
+
+**Technische Details:**
+```typescript
+// Export Service
+interface ExportService {
+  exportToCSV(albums: Album[]): Blob;
+  exportToM3U(albums: Album[]): Blob;
+  parseCSV(file: File): Promise<Album[]>;
+  convertCSVToM3U(csv: Album[]): Blob;
+}
+```
+
+**Acceptance Criteria:**
+- ✅ CSV öffnet korrekt in Excel/Google Sheets
+- ✅ m3u ist importierbar in Spotify-Tools
+- ✅ CSV → m3u Konvertierung funktioniert
+- ✅ Umlaute und Sonderzeichen korrekt dargestellt
+
+**Dateien zu erstellen/ändern:**
+- `app/src/services/export.ts` (NEU)
+- `app/src/pages/ManageMode.tsx` (UPDATE - Export Buttons)
+- `app/src/components/ui/ExportModal.tsx` (NEU - Optional)
+
+---
+
+#### 1.2 Search & Filter (1-2 Tage)
+
+**User Story**: *"Ich habe 200 CDs gescannt und möchte schnell ein bestimmtes Album finden."*
+
+**Features:**
+- [ ] **Search Bar**
+  - Eingabefeld mit Lupe-Icon
+  - Suche nach: Artist, Album Title
+  - Live-Filter (client-side)
+  - Debounced Input (300ms delay)
+  - "Clear" Button (X)
+  - Keyboard Shortcut: "/" fokussiert Suche
+
+- [ ] **Filter Optionen**
+  - Dropdown "Spotify Status":
+    - Alle Alben
+    - Mit Spotify ✅
+    - Ohne Spotify ❌
+  - Sortierung:
+    - Neueste zuerst (Standard)
+    - Artist A-Z
+    - Album A-Z
+    - Jahr aufsteigend/absteigend
+
+- [ ] **URL State (Optional)**
+  - Filter/Suche in URL Parameter
+  - Shareable Links: `/manage?search=pink&sort=artist`
+
+**Technische Details:**
+```typescript
+interface FilterState {
+  searchQuery: string;
+  spotifyStatus: 'all' | 'with_spotify' | 'without_spotify';
+  sortBy: 'newest' | 'artist_asc' | 'album_asc' | 'year_asc' | 'year_desc';
+}
+
+function filterAlbums(albums: Album[], filter: FilterState): Album[]
+```
+
+**Acceptance Criteria:**
+- ✅ Suche funktioniert mit < 100ms Delay
+- ✅ Filter kombinierbar (Suche + Spotify Status + Sortierung)
+- ✅ Responsive auf Mobile
+
+**Dateien zu ändern:**
+- `app/src/pages/ManageMode.tsx` (UPDATE)
+- `app/src/components/ui/SearchBar.tsx` (NEU)
+- `app/src/components/ui/FilterDropdown.tsx` (NEU)
+
+---
+
+#### 1.3 Album Management (2-3 Tage)
+
+**User Story**: *"Ich möchte Metadaten korrigieren, Alben manuell hinzufügen und mehrere Alben auf einmal löschen."*
+
+**Features:**
+- [ ] **Edit Album Metadata**
+  - "Edit" Button auf AlbumCard
+  - Modal/Dialog mit Formular
+  - Felder: Artist, Title, Year, Genre, Spotify URI
+  - Validation (required fields)
+  - "Save" & "Cancel" Buttons
+  - Optimistic UI Update
+
+- [ ] **Manual Album Entry**
+  - "+ Manuell hinzufügen" Button in ManageMode
+  - Formular mit allen Feldern
+  - Optional: Spotify-Suche Integration
+  - Optional: Cover URL Eingabe
+  - Generiere UUID als Barcode-Ersatz
+
+- [ ] **Bulk Operations**
+  - Checkbox auf jeder AlbumCard
+  - "Alle auswählen" / "Auswahl aufheben" Toggle
+  - Bulk Actions Bar (fixed bottom):
+    - "X Alben ausgewählt"
+    - "Löschen" Button
+    - "Exportieren" Button (nur ausgewählte)
+  - Bestätigungs-Dialog für Bulk Delete
+
+**Technische Details:**
+```typescript
+interface AlbumFormData {
+  artist: string;
+  title: string;
+  year?: number;
+  genre?: string;
+  spotifyUri?: string;
+  coverUrl?: string;
+}
+
+// Bulk Selection State
+const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+```
+
+**Acceptance Criteria:**
+- ✅ Edits werden persistent in IndexedDB gespeichert
+- ✅ Manual Entry funktioniert ohne Barcode
+- ✅ Bulk Delete mit Confirmation
+- ✅ UI ist intuitiv und responsive
+
+**Dateien zu ändern:**
+- `app/src/pages/ManageMode.tsx` (UPDATE - Bulk Selection)
+- `app/src/components/ui/AlbumCard.tsx` (UPDATE - Edit Button, Checkbox)
+- `app/src/components/ui/AlbumEditModal.tsx` (NEU)
+- `app/src/components/ui/AlbumAddModal.tsx` (NEU)
+- `app/src/services/db.ts` (UPDATE - updateAlbum)
+
+---
+
+#### 1.4 Statistics & Insights (1-2 Tage)
+
+**User Story**: *"Ich möchte Statistiken über meine Sammlung sehen: Wie viele Alben? Welche Artists?"*
+
+**Features:**
+- [ ] **Stats Widget (Manage Mode Header)**
+  - Karten-Layout (Cards):
+    - Gesamt-Anzahl Alben
+    - Anzahl mit Spotify
+    - Anzahl ohne Spotify
+    - Anzahl Artists (unique)
+
+- [ ] **Top Lists**
+  - Top 10 Artists (nach Album-Anzahl)
+  - Optional: Top Genres (wenn MusicBrainz Genre liefert)
+
+- [ ] **Visualizations (Optional)**
+  - Balkendiagramm: Alben pro Dekade (1970s, 1980s, ...)
+  - Pie Chart: Genres
+  - Optional: Recharts oder Chart.js
+
+**Technische Details:**
+```typescript
+interface CollectionStats {
+  totalAlbums: number;
+  withSpotify: number;
+  withoutSpotify: number;
+  uniqueArtists: number;
+  topArtists: { artist: string; count: number }[];
+  albumsByDecade: { decade: string; count: number }[];
+}
+
+async function getCollectionStats(albums: Album[]): Promise<CollectionStats>
+```
+
+**Acceptance Criteria:**
+- ✅ Stats werden schnell berechnet (< 500ms für 1000 Alben)
+- ✅ Responsive Layout
+- ✅ Charts sind optional (kann ohne gestartet werden)
+
+**Dateien zu ändern:**
+- `app/src/pages/ManageMode.tsx` (UPDATE - Stats Widget)
+- `app/src/components/ui/StatsCard.tsx` (NEU)
+- `app/src/utils/statistics.ts` (NEU)
+
+---
+
+### 🎨 PHASE 2: UX VERBESSERUNGEN
+
+**Ziel**: App benutzerfreundlicher, zugänglicher und professioneller machen
+**Dauer**: 5-7 Tage
+**Priorität**: MITTEL ⭐⭐
+
+#### 2.1 Loading States & Feedback (1 Tag)
+
+- [ ] Skeleton Screens statt Spinner
+- [ ] Progress Indicators für Batch-Operationen
+- [ ] Toast Improvements (Action Buttons, bessere Positionierung)
+
+#### 2.2 Error Handling (1 Tag)
+
+- [ ] Graceful Degradation (Offline-Modus, API Fehler mit Retry)
+- [ ] Error Boundaries (React Error Boundary)
+
+#### 2.3 Accessibility (1-2 Tage)
+
+- [ ] Keyboard Navigation verbessern
+- [ ] ARIA Labels hinzufügen
+- [ ] Color Contrast prüfen (WCAG AA)
+- [ ] Screen Reader Testing
+
+#### 2.4 Responsive & Mobile UX (1 Tag)
+
+- [ ] Touch-freundliche Buttons (min 44x44px)
+- [ ] Swipe Gestures (Optional: swipe to delete)
+- [ ] Bottom Sheet Modals für Mobile
+
+#### 2.5 Empty States (1 Tag)
+
+- [ ] Ansprechende Empty States mit Illustration
+- [ ] Call-to-Action Buttons
+- [ ] Onboarding-Hinweise für Erstnutzer
+
+---
+
+### 🎵 PHASE 3: ERWEITERTE ABSPIELFUNKTION
+
+**Ziel**: Playback-Features erweitern (aktuell nur Scan2Play vorhanden)
+**Dauer**: 4-6 Tage
+**Priorität**: NIEDRIG ⭐
+
+#### 3.1 Player Controls (2-3 Tage)
+
+- [ ] Mini-Player (Persistent Bottom Bar)
+- [ ] Spotify Web Playback SDK Integration
+- [ ] Play/Pause/Skip Buttons
+- [ ] Current Track anzeigen
+
+#### 3.2 Queue Management (1-2 Tage)
+
+- [ ] "Als Nächstes" Liste
+- [ ] Drag & Drop Reihenfolge
+- [ ] Shuffle & Repeat
+
+#### 3.3 Smart Playlists (1 Tag)
+
+- [ ] "Alle meine CDs" Playlist erstellen
+- [ ] "Zuletzt gescannt" Playlist
+- [ ] Genre-basierte Playlists
+
+---
+
+## 📊 Zeitplan & Priorisierung
+
+| Phase | Dauer | Status | Start | Ende |
+|-------|-------|--------|-------|------|
+| **Phase 1.1**: CSV/m3u Export | 2-3 Tage | 🔴 Ausstehend | TBD | TBD |
+| **Phase 1.2**: Search & Filter | 1-2 Tage | 🔴 Ausstehend | TBD | TBD |
+| **Phase 1.3**: Album Management | 2-3 Tage | 🔴 Ausstehend | TBD | TBD |
+| **Phase 1.4**: Statistics | 1-2 Tage | 🔴 Ausstehend | TBD | TBD |
+| **Phase 2**: UX Verbesserungen | 5-7 Tage | 🔴 Geplant | TBD | TBD |
+| **Phase 3**: Abspielfunktion | 4-6 Tage | 🔴 Optional | TBD | TBD |
+| **TOTAL** | **17-25 Tage** | (~3-5 Wochen) | | |
+
+---
+
+## 🎯 Nächster Schritt: CSV/m3u Export
+
+**Warum zuerst Export?**
+1. ✅ Sofortiger Nutzen für Benutzer
+2. ✅ Unabhängig von anderen Features
+3. ✅ Schnell umsetzbar (2-3 Tage)
+4. ✅ Foundation für Playlist-Features
+
+**Implementierungsreihenfolge:**
+1. CSV Export Service erstellen
+2. Export Button in ManageMode hinzufügen
+3. m3u Export implementieren
+4. CSV → m3u Converter hinzufügen
+5. Testing & Documentation
 
 ---
 
@@ -419,8 +782,9 @@ Ein Feature ist "Done" wenn:
 | Version | Datum | Änderung |
 |---------|-------|----------|
 | 1.0 | 2025-10-27 | Initiale Roadmap erstellt |
+| 2.0 | 2025-10-28 | Status aktualisiert: Phase 1 & 2 teilweise komplett. Detaillierter 3-Phasen Implementierungsplan hinzugefügt (Technische Grundfunktionen → UX → Playback) |
 
 ---
 
-**Status**: ✅ Roadmap genehmigt, bereit für Phase 1
-**Nächste Schritte**: Projekt-Setup, Technologie-Stack finalisieren, Phase 1 starten
+**Status**: ✅ Phase 1 komplett, Phase 2 50%, Phase 3 geplant
+**Nächste Schritte**: CSV/m3u Export implementieren (Phase 1.1)
